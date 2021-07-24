@@ -2,10 +2,9 @@
 
 ### Technologies used:
 
-## React
-
-.Redux
-.Firebase
-.NodeJS
-.Mongodb
-.Antdesign
+# React
+# Redux
+# Firebase
+# NodeJS
+# Mongodb
+# Antdesign
