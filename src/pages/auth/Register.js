@@ -33,7 +33,7 @@ const Register = () => {
 				value={email}
 				onChange={(e) => setEmail(e.target.value)}
 				size='md'
-				autofocus
+				autoFocus
 				background
 			/>
 			{/* <button type='submit' className='btn btn-primary mt-3 pt-2'>

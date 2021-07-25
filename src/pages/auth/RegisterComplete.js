@@ -58,7 +58,7 @@ const RegisterComplete = ({ history }) => {
 				value={password}
 				size='md'
 				onChange={(e) => setPassword(e.target.value)}
-				autofocus
+				autoFocus
 				background
 			/>
 			{/* <button type='submit' className='btn btn-primary mt-3 pt-2'>
