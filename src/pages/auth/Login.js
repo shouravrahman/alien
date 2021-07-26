@@ -1,7 +1,128 @@
-import React from 'react';
-
+import React, { useState } from 'react';
+import { MDBInput } from 'mdbreact';
+import { auth, googleAuthProvider } from '../../firebase';
+import { toast } from 'react-toastify';
+import { Button } from 'antd';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
+import { MailOutlined, GoogleOutlined } from '@ant-design/icons';
 const Login = () => {
-	return <div>login</div>;
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
+	const dispatch = useDispatch();
+	let history = useHistory();
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		setLoading(true);
+		try {
+			const result = await auth.signInWithEmailAndPassword(email, password);
+			const { user } = result;
+			const idTokenResult = await user.getIdTokenResult();
+			dispatch({
+				type: 'LOGGED_IN_USER',
+				payload: {
+					email: user.email,
+					token: idTokenResult.token,
+				},
+			});
+			history.push('/');
+		} catch (error) {
+			toast.error(error.message);
+			setLoading(false);
+		}
+	};
+	const googleLogin = async () => {
+		auth
+			.signInWithPopup(googleAuthProvider)
+			.then(async (result) => {
+				const { user } = result;
+				const idTokenResult = await user.getIdTokenResult();
+				dispatch({
+					type: 'LOGGED_IN_USER',
+					payload: {
+						email: user.email,
+						token: idTokenResult.token,
+					},
+				});
+				history.push('/');
+			})
+			.catch((error) => toast.error(error.message));
+	};
+	//write the form in a function for better splitting
+	const loginForm = () => (
+		<form>
+			<MDBInput
+				label='Email'
+				// id='typeEmail'
+				type='email'
+				value={email}
+				onChange={(e) => setEmail(e.target.value)}
+				size='md'
+				autoFocus
+				background
+				className='mb-2'
+			/>
+			<MDBInput
+				label='Password'
+				// id='typeEmail'
+				type='password'
+				value={password}
+				onChange={(e) => setPassword(e.target.value)}
+				size='md'
+				background
+				className='mb-2'
+			/>
+			{/* <button type='submit' className='btn btn-primary mt-3 pt-2'>
+				Register
+			</button> */}
+			<Button
+				type='primary'
+				onClick={handleSubmit}
+				className='mb-3'
+				block
+				shape='round'
+				icon={<MailOutlined />}
+				size='large'
+				disabled={!email || password.length < 6}
+			>
+				Sign In With Email/Password
+			</Button>
+			<Button
+				type='danger'
+				className='mb-3'
+				block
+				shape='round'
+				icon={<GoogleOutlined />}
+				size='large'
+				onClick={googleLogin}
+			>
+				Sign In With Google
+			</Button>
+		</form>
+	);
+	return (
+		<div className='container p-5'>
+			<div className='row'>
+				<div className='col-md-6 offset-md-3'>
+					{loading ? (
+						// <h4 className='text-danger mb-2'>Loading...please wait..</h4>
+
+						<div className=' align-middle text-center  mx-auto'>
+							<div className='spinner-grow text-primary ' role='status'>
+								<span className='sr-only'>Loading...</span>
+							</div>
+						</div>
+					) : (
+						<>
+							<h4 className='text-primary mb-2 text-center'>Login</h4>
+							{loginForm()}
+						</>
+					)}
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default Login;
