@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+
+import React, { useEffect, useState } from 'react';
 import { MDBInput } from 'mdbreact';
 import { auth, googleAuthProvider } from '../../firebase';
 import { toast } from 'react-toastify';
 import { Button } from 'antd';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { MailOutlined, GoogleOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 const Login = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -49,6 +52,13 @@ const Login = () => {
 			})
 			.catch((error) => toast.error(error.message));
 	};
+	const { user } = useSelector((state) => ({ ...state }));
+	useEffect(() => {
+		if (user && user.token) {
+			history.push('/');
+		}
+	}, [user]);
+
 	//write the form in a function for better splitting
 	const loginForm = () => (
 		<form>
@@ -99,6 +109,9 @@ const Login = () => {
 			>
 				Sign In With Google
 			</Button>
+			<Link to='/forgot/password' className='text-danger'>
+				Forgot password
+			</Link>
 		</form>
 	);
 	return (

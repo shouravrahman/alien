@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import './App.css';
 import { Switch, Route } from 'react-router-dom';
 import Header from './components/Nav/Header';
@@ -10,6 +11,7 @@ import RegisterComplete from './pages/auth/RegisterComplete';
 import { auth } from './firebase';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import ForgotPassword from './pages/auth/ForgotPassword';
 function App() {
 	const dispatch = useDispatch();
 	//check firebase auth state
@@ -42,6 +44,7 @@ function App() {
 					exact
 					component={RegisterComplete}
 				></Route>
+				<Route path='/forgot/password' exact component={ForgotPassword}></Route>
 			</Switch>
 		</>
 	);

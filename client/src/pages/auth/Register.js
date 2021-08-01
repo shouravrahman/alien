@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import { MDBInput, MDBBtn } from 'mdbreact';
 import { auth } from '../../firebase';
-
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
-const Register = () => {
+const Register = ({ history }) => {
 	const [email, setEmail] = useState('');
+	const { user } = useSelector((state) => ({ ...state }));
+	useEffect(() => {
+		if (user && user.token) {
+			history.push('/');
+		}
+	}, [user]);
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		//config
