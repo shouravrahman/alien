@@ -9,9 +9,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { MailOutlined, GoogleOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import { createOrUpdateUser } from '../../functions/auth';
 const Login = () => {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [email, setEmail] = useState('shouravrahman006@gmail.com');
+	const [password, setPassword] = useState('hello1234');
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 	let history = useHistory();
@@ -22,13 +23,22 @@ const Login = () => {
 			const result = await auth.signInWithEmailAndPassword(email, password);
 			const { user } = result;
 			const idTokenResult = await user.getIdTokenResult();
-			dispatch({
-				type: 'LOGGED_IN_USER',
-				payload: {
-					email: user.email,
-					token: idTokenResult.token,
-				},
-			});
+			// console.log(idTokenResult.token);
+			// console.log(idTokenResult.token);ss
+			createOrUpdateUser(idTokenResult.token)
+				.then((res) => {
+					dispatch({
+						type: 'LOGGED_IN_USER',
+						payload: {
+							name: res.data.name,
+							email: res.data.email,
+							token: idTokenResult.token,
+							role: res.data.role,
+							_id: res.data._id,
+						},
+					});
+				})
+				.catch();
 			history.push('/');
 		} catch (error) {
 			toast.error(error.message);
@@ -41,13 +51,20 @@ const Login = () => {
 			.then(async (result) => {
 				const { user } = result;
 				const idTokenResult = await user.getIdTokenResult();
-				dispatch({
-					type: 'LOGGED_IN_USER',
-					payload: {
-						email: user.email,
-						token: idTokenResult.token,
-					},
-				});
+				createOrUpdateUser(idTokenResult.token)
+					.then((res) => {
+						dispatch({
+							type: 'LOGGED_IN_USER',
+							payload: {
+								name: res.data.name,
+								email: res.data.email,
+								token: idTokenResult.token,
+								role: res.data.role,
+								_id: res.data._id,
+							},
+						});
+					})
+					.catch();
 				history.push('/');
 			})
 			.catch((error) => toast.error(error.message));
