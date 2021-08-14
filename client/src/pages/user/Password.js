@@ -32,8 +32,8 @@ const Password = () => {
 	};
 	const passwordUpdateForm = () => (
 		<form onSubmit={handleSubmit}>
-			<div className='form-group'>
-				<label>current password</label>
+			<div className='form-group p-4'>
+				<label className='lead'>Enter Current Password</label>
 				<input
 					onChange={(e) => setPassword(e.target.value)}
 					type='password'
@@ -52,19 +52,19 @@ const Password = () => {
 		</form>
 	);
 	return (
-		<div className='container-fluid'>
+		<div className='container-fluid mt-2'>
 			<div className='row'>
-				<div className='colmd-2'>
+				<div className='col-md-2'>
 					<UserNav />
 				</div>
 				<div className='col'>
 					{loading ? (
 						<h4 className='text-danger'>loading..</h4>
 					) : (
-						<h4>Update Password</h4>
+						<h4 className='text-center mt-4'>Update Password</h4>
 					)}
 
-					{passwordUpdateForm}
+					{passwordUpdateForm()}
 				</div>
 			</div>
 		</div>
