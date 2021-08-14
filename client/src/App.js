@@ -13,6 +13,12 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import { currentUser } from './functions/auth';
+import History from './pages/user/History';
+import UserRoute from './components/routes/UserRoute';
+import AdminRoute from './components/routes/AdminRoute';
+import Password from './pages/user/Password';
+import Wishlist from './pages/user/Wishlist';
+import AdminDashboard from './pages/admin/AdminDashboard';
 function App() {
 	const dispatch = useDispatch();
 	//check firebase auth state
@@ -53,6 +59,14 @@ function App() {
 					component={RegisterComplete}
 				></Route>
 				<Route path='/forgot/password' exact component={ForgotPassword}></Route>
+				<UserRoute path='/user/history' exact component={History}></UserRoute>
+				<UserRoute path='/user/password' exact component={Password}></UserRoute>
+				<UserRoute path='/user/wishlist' exact component={Wishlist}></UserRoute>
+				<AdminRoute
+					path='/admin/dashboard'
+					exact
+					component={AdminDashboard}
+				></AdminRoute>
 			</Switch>
 		</>
 	);
