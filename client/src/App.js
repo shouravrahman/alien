@@ -19,6 +19,8 @@ import AdminRoute from './components/routes/AdminRoute';
 import Password from './pages/user/Password';
 import Wishlist from './pages/user/Wishlist';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import CreateCategory from './pages/admin/category/CreateCategory';
+
 function App() {
 	const dispatch = useDispatch();
 	//check firebase auth state
@@ -66,6 +68,11 @@ function App() {
 					path='/admin/dashboard'
 					exact
 					component={AdminDashboard}
+				></AdminRoute>
+				<AdminRoute
+					path='/admin/category'
+					exact
+					component={CreateCategory}
 				></AdminRoute>
 			</Switch>
 		</>
