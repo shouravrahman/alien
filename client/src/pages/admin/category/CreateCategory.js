@@ -10,11 +10,15 @@ import AdminNav from '../../../components/nav/AdminNav';
 import { Link } from 'react-router-dom';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import CategoryForm from '../../../components/forms/CategoryForm';
+import Filter from '../../../components/forms/Filter';
 const CreateCategory = () => {
 	const [name, setName] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [categories, setCategories] = useState([]);
-	const { user } = useSelector((state) => ({ ...state }));
+	const [keyword, setKeyword] = useState(''); //for search/filter
+	const { user } = useSelector((state) => ({
+		...state,
+	}));
 
 	const loadCategories = () =>
 		getCategories().then((categories) => setCategories(categories.data));
@@ -40,7 +44,12 @@ const CreateCategory = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		setLoading(true);
-		createCategory({ name }, user.token)
+		createCategory(
+			{
+				name,
+			},
+			user.token
+		)
 			.then((res) => {
 				setLoading(false);
 				setName('');
@@ -53,6 +62,9 @@ const CreateCategory = () => {
 			});
 	};
 
+	// HOC  baby
+	const searched = (keyword) => (category) =>
+		category.name.toLowerCase().includes(keyword);
 	return (
 		<div className='container-fluid'>
 			<div className='row'>
@@ -60,25 +72,14 @@ const CreateCategory = () => {
 					<AdminNav />
 				</div>
 				<div className='col'>
-					{loading ? (
-						<h5 className='text-danger'>loading..</h5>
-					) : (
-						<h4>Create category</h4>
-					)}
-					<CategoryForm
-						handleSubmit={handleSubmit}
-						name={name}
-						setName={setName}
-					/>
-					<hr />
+					{loading ? <h5 className='text-danger'> loading.. </h5> : <h4> Create category </h4>}
+					<CategoryForm handleSubmit={handleSubmit} name={name} setName={setName} />
+					<Filter keyword={keyword} setKeyword={setKeyword} />
 					{categories &&
-						categories.map((cat) => (
+						categories.filter(searched(keyword)).map((cat) => (
 							<div className='alert alert-secondary' key={cat._id}>
-								{cat.name}{' '}
-								<span
-									onClick={() => handleRemove(cat.slug)}
-									className='btn btn-sm float-right'
-								>
+								{cat.name}
+								<span onClick={() => handleRemove(cat.slug)} className='btn btn-sm float-right'>
 									<DeleteOutlined className='text-danger' />
 								</span>
 								<Link to={`admin/category/${cat.slug}`}>
