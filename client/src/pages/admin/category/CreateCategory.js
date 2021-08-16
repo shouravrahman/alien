@@ -6,9 +6,10 @@ import {
 	createCategory,
 	removeCategory,
 } from '../../../functions/category';
-import AdminNav from '../../../components/Nav/AdminNav';
+import AdminNav from '../../../components/nav/AdminNav';
 import { Link } from 'react-router-dom';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import CategoryForm from '../../../components/forms/CategoryForm';
 const CreateCategory = () => {
 	const [name, setName] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -51,22 +52,7 @@ const CreateCategory = () => {
 				if (err.response.status === 400) toast.error(err.response.data);
 			});
 	};
-	const categoryForm = () => {
-		<form onSubmit={handleSubmit}>
-			<div className='form-group'>
-				<input
-					type='text'
-					className='form-control'
-					value={name}
-					onChange={(e) => setName(e.target.value)}
-					required
-					autoFocus
-				/>
-				<br />
-				<button className='btn btn-outline-primary'>Save</button>
-			</div>
-		</form>;
-	};
+
 	return (
 		<div className='container-fluid'>
 			<div className='row'>
@@ -79,7 +65,11 @@ const CreateCategory = () => {
 					) : (
 						<h4>Create category</h4>
 					)}
-					{categoryForm()}
+					<CategoryForm
+						handleSubmit={handleSubmit}
+						name={name}
+						setName={setName}
+					/>
 					<hr />
 					{categories &&
 						categories.map((cat) => (
