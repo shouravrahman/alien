@@ -20,6 +20,7 @@ import Password from './pages/user/Password';
 import Wishlist from './pages/user/Wishlist';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import CreateCategory from './pages/admin/category/CreateCategory';
+import UpdateCategory from './pages/admin/category/UpdateCategory';
 
 function App() {
 	const dispatch = useDispatch();
@@ -73,6 +74,11 @@ function App() {
 					path='/admin/category'
 					exact
 					component={CreateCategory}
+				></AdminRoute>
+				<AdminRoute
+					path='/admin/category/:slug'
+					exact
+					component={UpdateCategory}
 				></AdminRoute>
 			</Switch>
 		</>
