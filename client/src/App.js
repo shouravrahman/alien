@@ -22,6 +22,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import CreateCategory from './pages/admin/category/CreateCategory';
 import UpdateCategory from './pages/admin/category/UpdateCategory';
 import CreateSubcategory from './pages/admin/subcategory/CreateSubcategory';
+import UpdateSubcategory from './pages/admin/subcategory/UpdateSubcategory';
 
 function App() {
 	const dispatch = useDispatch();
@@ -72,6 +73,10 @@ function App() {
 					path='/admin/subcategory'
 					exact
 					component={CreateSubcategory}></AdminRoute>
+				<AdminRoute
+					path='/admin/subcategory/:slug'
+					exact
+					component={UpdateSubcategory}></AdminRoute>
 			</Switch>
 		</>
 	);

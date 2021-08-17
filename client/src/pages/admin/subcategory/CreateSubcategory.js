@@ -116,7 +116,7 @@ const CreateSubcategory = () => {
 								<span onClick={() => handleRemove(sub.slug)} className='btn btn-sm float-right'>
 									<DeleteOutlined className='text-danger' />
 								</span>
-								<Link to={`admin/subcategory/${sub.slug}`}>
+								<Link to={`/admin/subcategory/${sub.slug}`}>
 									<span className='btn btn-sm float-right'>
 										<EditOutlined className='text-warning' />
 									</span>
