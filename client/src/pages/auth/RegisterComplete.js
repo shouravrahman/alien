@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { MDBInput, MDBBtn } from 'mdbreact';
 import { auth } from '../../firebase';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
@@ -21,10 +20,7 @@ const RegisterComplete = ({ history }) => {
 			toast.error(`Password must be at least 6 charecters long`);
 		}
 		try {
-			const result = await auth.signInWithEmailLink(
-				email,
-				window.location.href
-			);
+			const result = await auth.signInWithEmailLink(email, window.location.href);
 
 			if (result.user.emailVerified) {
 				//remove useremail from local storage
@@ -62,30 +58,20 @@ const RegisterComplete = ({ history }) => {
 	//write the form in a function for better splitting
 	const registerCompleteForm = () => (
 		<form onSubmit={handleSubmit}>
-			<MDBInput
-				label='Email'
-				id='typeEmail'
-				type='email'
-				value={email}
-				size='md'
-				disabled
-			/>
-			<MDBInput
+			<input label='Email' type='email' value={email} disabled />
+			<input
 				label='Password'
-				// id='typePassword'
 				type='password'
 				value={password}
-				size='md'
 				onChange={(e) => setPassword(e.target.value)}
 				autoFocus
-				background
 			/>
 			{/* <button type='submit' className='btn btn-primary mt-3 pt-2'>
 				Register
 			</button> */}
-			<MDBBtn type='submit' color='secondary' className='m-auto'>
+			<button type='submit' className='m-auto'>
 				Complete Registration
-			</MDBBtn>
+			</button>
 		</form>
 	);
 	return (

@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useEffect, useState } from 'react';
-import { MDBInput } from 'mdbreact';
 import { auth } from '../../firebase';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
@@ -49,14 +48,12 @@ const ForgotPassword = ({ history }) => {
 				<h4 className='text-primary mb-2 text-center'>Forgot Password</h4>
 			)}
 			<form onSubmit={handleSubmit}>
-				<MDBInput
+				<input
 					label='Email'
 					type='email'
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
-					size='md'
 					autoFocus
-					background
 					className='mb-2'
 				/>
 				<button className='btn btn-raised' disabled={!email}>

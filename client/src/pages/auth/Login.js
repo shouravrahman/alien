@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useEffect, useState } from 'react';
-import { MDBInput } from 'mdbreact';
 import { auth, googleAuthProvider } from '../../firebase';
 import { toast } from 'react-toastify';
 import { Button } from 'antd';
@@ -91,25 +90,21 @@ const Login = () => {
 	//write the form in a function for better splitting
 	const loginForm = () => (
 		<form>
-			<MDBInput
+			<input
 				label='Email'
 				// id='typeEmail'
 				type='email'
 				value={email}
 				onChange={(e) => setEmail(e.target.value)}
-				size='md'
 				autoFocus
-				background
 				className='mb-2'
 			/>
-			<MDBInput
+			<input
 				label='Password'
 				// id='typeEmail'
 				type='password'
 				value={password}
 				onChange={(e) => setPassword(e.target.value)}
-				size='md'
-				background
 				className='mb-2'
 			/>
 			{/* <button type='submit' className='btn btn-primary mt-3 pt-2'>
@@ -123,8 +118,7 @@ const Login = () => {
 				shape='round'
 				icon={<MailOutlined />}
 				size='large'
-				disabled={!email || password.length < 6}
-			>
+				disabled={!email || password.length < 6}>
 				Sign In With Email/Password
 			</Button>
 			<Button
@@ -134,8 +128,7 @@ const Login = () => {
 				shape='round'
 				icon={<GoogleOutlined />}
 				size='large'
-				onClick={googleLogin}
-			>
+				onClick={googleLogin}>
 				Sign In With Google
 			</Button>
 			<Link to='/forgot/password' className='text-danger'>

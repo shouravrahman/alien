@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { MDBInput, MDBBtn } from 'mdbreact';
 import { auth } from '../../firebase';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
@@ -33,22 +32,20 @@ const Register = ({ history }) => {
 	//write the form in a function for better splitting
 	const registerForm = () => (
 		<form onSubmit={handleSubmit}>
-			<MDBInput
+			<input
 				label='Email'
 				// id='typeEmail'
 				type='email'
 				value={email}
 				onChange={(e) => setEmail(e.target.value)}
-				size='md'
 				autoFocus
-				background
 			/>
 			{/* <button type='submit' className='btn btn-primary mt-3 pt-2'>
 				Register
 			</button> */}
-			<MDBBtn type='submit' color='secondary' className='m-auto'>
+			<button type='submit' className='m-auto'>
 				Register
-			</MDBBtn>
+			</button>
 		</form>
 	);
 	return (
