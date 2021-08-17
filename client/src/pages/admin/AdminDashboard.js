@@ -1,14 +1,13 @@
 import React from 'react';
-import AdminNav from '../../components/Nav/AdminNav';
-
+import AdminNav from '../../components/nav/AdminNav';
 const AdminDashboard = () => {
 	return (
 		<div className='container-fluid'>
 			<div className='row'>
-				<div className='colmd-2'>
+				<div className='col-md-2'>
 					<AdminNav />
 				</div>
-				<div className='col'>Admin dashboard</div>
+				<div className='col-md-10'>Admin dashboard</div>
 			</div>
 		</div>
 	);

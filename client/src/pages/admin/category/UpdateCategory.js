@@ -11,9 +11,7 @@ const UpdateCategory = ({ history, match }) => {
 	const { user } = useSelector((state) => ({ ...state }));
 
 	const loadCategory = () =>
-		getCategory(match.params.slug).then((categories) =>
-			setName(categories.data.name)
-		);
+		getCategory(match.params.slug).then((categories) => setName(categories.data.name));
 
 	useEffect(() => {
 		loadCategory();
@@ -27,7 +25,7 @@ const UpdateCategory = ({ history, match }) => {
 			.then((res) => {
 				setLoading(false);
 				setName('');
-				toast.success(`'${res.data.name} category updated`);
+				toast.success(`${match.params.slug} category updated to ${res.data.name}`);
 				history.push('/admin/category');
 			})
 			.catch((err) => {
@@ -38,22 +36,13 @@ const UpdateCategory = ({ history, match }) => {
 
 	return (
 		<div className='container-fluid'>
-			<div className='row'>
-				<div className='colmd-2'>
+			<div className='row p-2'>
+				<div className='col-md-2'>
 					<AdminNav />
 				</div>
-				<div className='col'>
-					{loading ? (
-						<h5 className='text-danger'>loading..</h5>
-					) : (
-						<h4>Update category</h4>
-					)}
-					<CategoryForm
-						handleSubmit={handleSubmit}
-						name={name}
-						setName={setName}
-					/>
-					<hr />
+				<div className='col-md-10'>
+					{loading ? <h5 className='text-danger'>loading..</h5> : <h4>Update category</h4>}
+					<CategoryForm handleSubmit={handleSubmit} name={name} setName={setName} />
 				</div>
 			</div>
 		</div>

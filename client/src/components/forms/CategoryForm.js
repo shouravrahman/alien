@@ -11,7 +11,8 @@ const CategoryForm = ({ handleSubmit, name, setName }) => {
 						value={name}
 						onChange={(e) => setName(e.target.value)}
 						required
-						autoFocus
+						autofocus
+
 					/>
 					<br />
 					<button className='btn btn-outline-primary'>Save</button>

@@ -2,19 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import {
-	getCategories,
-	createCategory,
-	removeCategory,
-} from '../../../functions/category';
+	createSubcategory,
+	removeSubcategory,
+	getSubcategories,
+} from '../../../functions/subcategory';
 import AdminNav from '../../../components/nav/AdminNav';
 import { Link } from 'react-router-dom';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import CategoryForm from '../../../components/forms/CategoryForm';
 import Filter from '../../../components/forms/Filter';
-const CreateCategory = () => {
+import { getCategories } from '../../../functions/category';
+
+const CreateSubcategory = () => {
 	const [name, setName] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [categories, setCategories] = useState([]);
+	const [subcategories, setSubcategories] = useState([]);
+	const [category, setCategory] = useState('');
 	const [keyword, setKeyword] = useState(''); //for search/filter
 	const { user } = useSelector((state) => ({
 		...state,
@@ -22,18 +26,22 @@ const CreateCategory = () => {
 
 	const loadCategories = () =>
 		getCategories().then((categories) => setCategories(categories.data));
+	const loadSubcategories = () =>
+		getSubcategories().then((subcategories) => setSubcategories(subcategories.data));
 
 	useEffect(() => {
+		loadSubcategories();
 		loadCategories();
 	}, []);
+
 	const handleRemove = (slug) => {
 		if (window.confirm('Are you sure you want to delete this category?')) {
 			setLoading(true);
-			removeCategory(slug, user.token)
+			removeSubcategory(slug, user.token)
 				.then((res) => {
 					setLoading(false);
-					toast.error(`${res.data.name} category deleted`);
-					loadCategories();
+					toast.error(`${res.data.name} subcategory deleted`);
+					loadSubcategories();
 				})
 				.catch((err) => {
 					setLoading(false);
@@ -41,20 +49,22 @@ const CreateCategory = () => {
 				});
 		}
 	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		setLoading(true);
-		createCategory(
+		createSubcategory(
 			{
 				name,
+				parent: category,
 			},
 			user.token
 		)
 			.then((res) => {
 				setLoading(false);
 				setName('');
-				toast.success(`'${res.data.name} category created`);
-				loadCategories();
+				toast.success(`${res.data.name} subcategory created`);
+				loadSubcategories();
 			})
 			.catch((err) => {
 				setLoading(false);
@@ -65,24 +75,48 @@ const CreateCategory = () => {
 	// HOC  baby
 	const searched = (keyword) => (category) =>
 		category.name.toLowerCase().includes(keyword);
+
 	return (
 		<div className='container-fluid'>
 			<div className='row'>
 				<div className='col-md-2'>
 					<AdminNav />
 				</div>
-				<div className='col'>
-					{loading ? <h5 className='text-danger'> loading.. </h5> : <h4> Create category </h4>}
+				<div className='col-md-10'>
+					{loading ? (
+						<h5 className='text-danger'> loading.. </h5>
+					) : (
+						<h4> Create Subcategory </h4>
+					)}
+
+					<div className='form-group'>
+						<label>Parent Category</label>
+						<select
+							name='category'
+							className='form-control'
+							onChange={(e) => setCategory(e.target.value)}>
+							<option>please select</option>
+							{categories.length > 0 &&
+								categories.map((c) => (
+									<option key={c._id} value={c._id}>
+										{c.name}
+									</option>
+								))}
+						</select>
+					</div>
+
 					<CategoryForm handleSubmit={handleSubmit} name={name} setName={setName} />
+
 					<Filter keyword={keyword} setKeyword={setKeyword} />
-					{categories &&
-						categories.filter(searched(keyword)).map((cat) => (
-							<div className='alert alert-secondary' key={cat._id}>
-								{cat.name}
-								<span onClick={() => handleRemove(cat.slug)} className='btn btn-sm float-right'>
+
+					{subcategories &&
+						subcategories.filter(searched(keyword)).map((sub) => (
+							<div className='alert alert-secondary' key={sub._id}>
+								{sub.name}
+								<span onClick={() => handleRemove(sub.slug)} className='btn btn-sm float-right'>
 									<DeleteOutlined className='text-danger' />
 								</span>
-								<Link to={`/admin/category/${cat.slug}`}>
+								<Link to={`admin/subcategory/${sub.slug}`}>
 									<span className='btn btn-sm float-right'>
 										<EditOutlined className='text-warning' />
 									</span>
@@ -95,4 +129,4 @@ const CreateCategory = () => {
 	);
 };
 
-export default CreateCategory;
+export default CreateSubcategory;

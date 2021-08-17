@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import './App.css';
 import { Switch, Route } from 'react-router-dom';
-import Header from './components/Nav/Header';
+import Header from './components/nav/Header';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Home from './pages/Home';
@@ -21,6 +21,7 @@ import Wishlist from './pages/user/Wishlist';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import CreateCategory from './pages/admin/category/CreateCategory';
 import UpdateCategory from './pages/admin/category/UpdateCategory';
+import CreateSubcategory from './pages/admin/subcategory/CreateSubcategory';
 
 function App() {
 	const dispatch = useDispatch();
@@ -56,30 +57,21 @@ function App() {
 				<Route path='/' exact component={Home}></Route>
 				<Route path='/login' exact component={Login}></Route>
 				<Route path='/register' exact component={Register}></Route>
-				<Route
-					path='/register/complete'
-					exact
-					component={RegisterComplete}
-				></Route>
+				<Route path='/register/complete' exact component={RegisterComplete}></Route>
 				<Route path='/forgot/password' exact component={ForgotPassword}></Route>
 				<UserRoute path='/user/history' exact component={History}></UserRoute>
 				<UserRoute path='/user/password' exact component={Password}></UserRoute>
 				<UserRoute path='/user/wishlist' exact component={Wishlist}></UserRoute>
-				<AdminRoute
-					path='/admin/dashboard'
-					exact
-					component={AdminDashboard}
-				></AdminRoute>
-				<AdminRoute
-					path='/admin/category'
-					exact
-					component={CreateCategory}
-				></AdminRoute>
+				<AdminRoute path='/admin/dashboard' exact component={AdminDashboard}></AdminRoute>
+				<AdminRoute path='/admin/category' exact component={CreateCategory}></AdminRoute>
 				<AdminRoute
 					path='/admin/category/:slug'
 					exact
-					component={UpdateCategory}
-				></AdminRoute>
+					component={UpdateCategory}></AdminRoute>
+				<AdminRoute
+					path='/admin/subcategory'
+					exact
+					component={CreateSubcategory}></AdminRoute>
 			</Switch>
 		</>
 	);

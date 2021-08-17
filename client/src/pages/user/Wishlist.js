@@ -1,5 +1,5 @@
 import React from 'react';
-import UserNav from '../../components/Nav/UserNav';
+import UserNav from '../../components/nav/UserNav';
 
 const Wishlist = () => {
 	return (

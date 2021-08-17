@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import UserNav from '../../components/Nav/UserNav';
+import UserNav from '../../components/nav/UserNav';
 import { auth } from '../../firebase';
 import { toast } from 'react-toastify';
 
@@ -44,8 +44,7 @@ const Password = () => {
 				/>
 				<button
 					className='btn btn-primary'
-					disabled={!password || password.length < 6 || loading}
-				>
+					disabled={!password || password.length < 6 || loading}>
 					Submit
 				</button>
 			</div>
