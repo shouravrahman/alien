@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import CategoryForm from '../../../components/forms/CategoryForm';
 import Filter from '../../../components/forms/Filter';
+
 const CreateCategory = () => {
 	const [name, setName] = useState('');
 	const [loading, setLoading] = useState(false);

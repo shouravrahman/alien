@@ -31,19 +31,19 @@ const Register = ({ history }) => {
 	};
 	//write the form in a function for better splitting
 	const registerForm = () => (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} className='form-group'>
 			<input
 				label='Email'
-				// id='typeEmail'
 				type='email'
 				value={email}
 				onChange={(e) => setEmail(e.target.value)}
 				autoFocus
+				className='form-control mb-1'
 			/>
 			{/* <button type='submit' className='btn btn-primary mt-3 pt-2'>
 				Register
 			</button> */}
-			<button type='submit' className='m-auto'>
+			<button type='submit' className='btn primary mt-3'>
 				Register
 			</button>
 		</form>

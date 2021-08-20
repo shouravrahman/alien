@@ -89,23 +89,23 @@ const Login = () => {
 
 	//write the form in a function for better splitting
 	const loginForm = () => (
-		<form>
+		<form className='form-group'>
 			<input
+				className='form-control mb-3'
 				label='Email'
 				// id='typeEmail'
 				type='email'
 				value={email}
 				onChange={(e) => setEmail(e.target.value)}
 				autoFocus
-				className='mb-2'
 			/>
 			<input
+				className='form-control mb-3'
 				label='Password'
 				// id='typeEmail'
 				type='password'
 				value={password}
 				onChange={(e) => setPassword(e.target.value)}
-				className='mb-2'
 			/>
 			{/* <button type='submit' className='btn btn-primary mt-3 pt-2'>
 				Register
@@ -113,7 +113,7 @@ const Login = () => {
 			<Button
 				type='primary'
 				onClick={handleSubmit}
-				className='mb-3'
+				className='mt-4 mb-3'
 				block
 				shape='round'
 				icon={<MailOutlined />}
@@ -150,7 +150,7 @@ const Login = () => {
 						</div>
 					) : (
 						<>
-							<h4 className='text-primary mb-2 text-center'>Login</h4>
+							<h4 className='text-primary mb-4 text-center'>Login</h4>
 							{loginForm()}
 						</>
 					)}

@@ -57,14 +57,21 @@ const RegisterComplete = ({ history }) => {
 	}, []);
 	//write the form in a function for better splitting
 	const registerCompleteForm = () => (
-		<form onSubmit={handleSubmit}>
-			<input label='Email' type='email' value={email} disabled />
+		<form onSubmit={handleSubmit} className='form-group'>
+			<input
+				label='Email'
+				type='email'
+				value={email}
+				disabled
+				className='form-control mb-1'
+			/>
 			<input
 				label='Password'
 				type='password'
 				value={password}
 				onChange={(e) => setPassword(e.target.value)}
 				autoFocus
+				className='form-control mb-1'
 			/>
 			{/* <button type='submit' className='btn btn-primary mt-3 pt-2'>
 				Register

@@ -57,3 +57,10 @@ exports.update = async (req, res) => {
 		res.status(400).send('update category failed');
 	}
 };
+
+exports.getSubcategories = (req, res) => {
+	Subcategories.find({ parent: req.params._id }).exec((err, subcategories) => {
+		if (err) console.log(err);
+		res.json(subcategories);
+	});
+};
