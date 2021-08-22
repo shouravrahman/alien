@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { auth } from '../../firebase';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import Loader from 'react-loader-spinner';
 
 const ForgotPassword = ({ history }) => {
 	const [email, setEmail] = useState('');
@@ -39,11 +40,15 @@ const ForgotPassword = ({ history }) => {
 		<div className='container col-md-6 offset-md-3 p-5'>
 			{loading ? (
 				// <h4 className='text-danger mb-2'>Loading...please wait..</h4>
-				<div className=' align-middle text-center  mx-auto'>
-					<div className='spinner-grow text-primary ' role='status'>
-						<span className='sr-only'>Loading...</span>
-					</div>
-				</div>
+				<Loader
+					type='Plane'
+					color='Blue'
+					secondaryColor='Red'
+					height={40}
+					width={40}
+					className='d-flex align-items-center justify-content-center
+						 position-relative'
+				/>
 			) : (
 				<h4 className='text-primary mb-2 text-center'>Forgot Password</h4>
 			)}

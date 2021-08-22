@@ -5,6 +5,7 @@ import { createProduct } from '../../../functions/product';
 import { getCategories, getSubcategories } from '../../../functions/category';
 import AdminNav from '../../../components/nav/AdminNav';
 import ProductCreateForm from '../../../components/forms/ProductCreateForm';
+import FileUpload from '../../../components/forms/FileUpload';
 
 const initialState = {
 	title: '',
@@ -26,6 +27,7 @@ const CreateProduct = () => {
 	const [values, setValues] = useState(initialState);
 	const [subcategoryOptions, setSubcategoryOptions] = useState([]);
 	const [showSubcategories, setShowSubcategories] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const { user } = useSelector((state) => ({ ...state }));
 
 	const loadCategories = () =>
@@ -71,6 +73,9 @@ const CreateProduct = () => {
 				</div>
 				<div className='col-md-10'>
 					<h4>Create Product</h4>
+					<div className='p-3'>
+						<FileUpload values={values} setValues={setValues} setLoading={setLoading} />
+					</div>
 					<ProductCreateForm
 						handleChange={handleChange}
 						handleSubmit={handleSubmit}

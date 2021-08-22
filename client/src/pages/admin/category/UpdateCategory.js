@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { getCategory, updateCategory } from '../../../functions/category';
 import AdminNav from '../../../components/nav/AdminNav';
 import CategoryForm from '../../../components/forms/CategoryForm';
+import Loader from 'react-loader-spinner';
 
 const UpdateCategory = ({ history, match }) => {
 	const [name, setName] = useState('');
@@ -41,7 +42,19 @@ const UpdateCategory = ({ history, match }) => {
 					<AdminNav />
 				</div>
 				<div className='col-md-10'>
-					{loading ? <h5 className='text-danger'>loading..</h5> : <h4>Update category</h4>}
+					{loading ? (
+						<Loader
+							type='Plane'
+							color='Blue'
+							secondaryColor='Red'
+							height={40}
+							width={40}
+							className='d-flex align-items-center justify-content-center
+						 position-relative'
+						/>
+					) : (
+						<h4>Update category</h4>
+					)}
 					<CategoryForm handleSubmit={handleSubmit} name={name} setName={setName} />
 				</div>
 			</div>

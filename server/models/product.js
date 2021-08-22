@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
-import { Schema } from 'mongoose';
-const ObjectId = Schema.Types.ObjectId;
+const { Schema } = mongoose;
+// const ObjectId = Schema.Types.ObjectId;
+const { ObjectId } = mongoose.Schema;
+
+// const ObjectId = Schema.Types.ObjectId;
+// const { ObjectId } = mongoose.Schema.Types.ObjectId;
+
 const productSchema = new Schema(
 	{
 		title: {
@@ -29,12 +34,12 @@ const productSchema = new Schema(
 			maxlength: 32,
 		},
 		category: {
-			type: ObjectID,
+			type: ObjectId,
 			ref: 'Category',
 		},
 		subcategory: [
 			{
-				type: ObjectID,
+				type: ObjectId,
 				ref: 'Subcategory',
 			},
 		],

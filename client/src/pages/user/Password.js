@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import UserNav from '../../components/nav/UserNav';
 import { auth } from '../../firebase';
 import { toast } from 'react-toastify';
+import Loader from 'react-loader-spinner';
 
 const Password = () => {
 	const [password, setPassword] = useState('');
@@ -44,7 +45,8 @@ const Password = () => {
 				/>
 				<button
 					className='btn btn-primary'
-					disabled={!password || password.length < 6 || loading}>
+					disabled={!password || password.length < 6 || loading}
+				>
 					Submit
 				</button>
 			</div>
@@ -58,7 +60,15 @@ const Password = () => {
 				</div>
 				<div className='col'>
 					{loading ? (
-						<h4 className='text-danger'>loading..</h4>
+						<Loader
+							type='Grid'
+							color='Blue'
+							secondaryColor='Red'
+							height={40}
+							width={40}
+							className='d-flex align-items-center justify-content-center
+						 position-relative'
+						/>
 					) : (
 						<h4 className='text-center mt-4'>Update Password</h4>
 					)}

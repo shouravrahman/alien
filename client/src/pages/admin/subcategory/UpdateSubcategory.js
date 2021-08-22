@@ -5,6 +5,7 @@ import { getSubcategory, updateSubcategory } from '../../../functions/subcategor
 import AdminNav from '../../../components/nav/AdminNav';
 import CategoryForm from '../../../components/forms/CategoryForm';
 import { getCategories } from '../../../functions/category';
+import Loader from 'react-loader-spinner';
 
 const UpdateSubcategory = ({ history, match }) => {
 	const [name, setName] = useState('');
@@ -61,7 +62,15 @@ const UpdateSubcategory = ({ history, match }) => {
 				</div>
 				<div className='col-md-10'>
 					{loading ? (
-						<h5 className='text-danger'> loading.. </h5>
+						<Loader
+							type='Plane'
+							color='Blue'
+							secondaryColor='Red'
+							height={40}
+							width={40}
+							className='d-flex align-items-center justify-content-center
+						 position-relative'
+						/>
 					) : (
 						<h4> Update Subcategory </h4>
 					)}
@@ -71,7 +80,8 @@ const UpdateSubcategory = ({ history, match }) => {
 						<select
 							name='category'
 							className='form-control'
-							onChange={(e) => setParent(e.target.value)}>
+							onChange={(e) => setParent(e.target.value)}
+						>
 							<option>please select</option>
 							{categories.length > 0 &&
 								categories.map((c) => (

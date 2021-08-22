@@ -43,7 +43,7 @@ const Register = ({ history }) => {
 			{/* <button type='submit' className='btn btn-primary mt-3 pt-2'>
 				Register
 			</button> */}
-			<button type='submit' className='btn primary mt-3'>
+			<button type='submit' className='btn btn-primary btn-raised mt-3'>
 				Register
 			</button>
 		</form>

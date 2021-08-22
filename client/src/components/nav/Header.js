@@ -36,49 +36,52 @@ const Header = () => {
 			onClick={handleClick}
 			selectedKeys={[current]}
 			mode='horizontal'
-			className='d-flex w-100'>
-			<div>
-				<Item key='home' icon={<HomeOutlined />}>
-					<Link to='/'>Home</Link>
-				</Item>
-				{user && (
-					<SubMenu
-						key='SubMenu'
-						icon={<SettingOutlined />}
-						title={user.email && user.email.split('@')[0]}
-						className='ms-auto'>
-						{user && user.role === 'subscriber' && (
-							<Item key='dashboard'>
-								<Link to='/user/history'>Dashboard</Link>
-							</Item>
-						)}
-						{user && user.role === 'admin' && (
-							<Item key='dashboard'>
-								<Link to='/admin/dashboard'>Dashboard</Link>
-							</Item>
-						)}
-						<Item key='logout' icon={<LogoutOutlined />} onClick={logout}>
-							Logout
+			// className='d-flex w-100'
+		>
+			{/* <div> */}
+			<Item key='home' icon={<HomeOutlined />}>
+				<Link to='/'>Home</Link>
+			</Item>
+			{user && (
+				<SubMenu
+					key='SubMenu'
+					icon={<SettingOutlined />}
+					title={user.email && user.email.split('@')[0]}
+					className='ml-auto'
+				>
+					{user && user.role === 'subscriber' && (
+						<Item key='dashboard'>
+							<Link to='/user/history'>Dashboard</Link>
 						</Item>
-					</SubMenu>
-				)}
-			</div>
-			<div className='ml-auto d-flex'>
-				{!user && (
-					<Item
-						key='register'
-						icon={<UserAddOutlined />}
-						// style={{ marginLeft: 'auto' }}
-						className='m-auto'>
-						<Link to='/register'>Register</Link>
+					)}
+					{user && user.role === 'admin' && (
+						<Item key='dashboard'>
+							<Link to='/admin/dashboard'>Dashboard</Link>
+						</Item>
+					)}
+					<Item key='logout' icon={<LogoutOutlined />} onClick={logout}>
+						Logout
 					</Item>
-				)}
-				{!user && (
-					<Item key='login' icon={<UserOutlined />}>
-						<Link to='/login'>Login</Link>
-					</Item>
-				)}
-			</div>
+				</SubMenu>
+			)}
+			{/* </div> */}
+			{/* <div className='ml-auto d-flex'> */}
+			{!user && (
+				<Item
+					key='register'
+					icon={<UserAddOutlined />}
+					// style={{ marginLeft: 'auto' }}
+					className='ml-auto'
+				>
+					<Link to='/register'>Register</Link>
+				</Item>
+			)}
+			{!user && (
+				<Item key='login' icon={<UserOutlined />}>
+					<Link to='/login'>Login</Link>
+				</Item>
+			)}
+			{/* </div> */}
 		</Menu>
 	);
 };

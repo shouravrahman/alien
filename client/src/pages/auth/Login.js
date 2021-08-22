@@ -9,6 +9,8 @@ import { useHistory } from 'react-router';
 import { MailOutlined, GoogleOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { createOrUpdateUser } from '../../functions/auth';
+import Loader from 'react-loader-spinner';
+
 const Login = () => {
 	const [email, setEmail] = useState('shouravrahman006@gmail.com');
 	const [password, setPassword] = useState('hello1234');
@@ -118,7 +120,8 @@ const Login = () => {
 				shape='round'
 				icon={<MailOutlined />}
 				size='large'
-				disabled={!email || password.length < 6}>
+				disabled={!email || password.length < 6}
+			>
 				Sign In With Email/Password
 			</Button>
 			<Button
@@ -128,7 +131,8 @@ const Login = () => {
 				shape='round'
 				icon={<GoogleOutlined />}
 				size='large'
-				onClick={googleLogin}>
+				onClick={googleLogin}
+			>
 				Sign In With Google
 			</Button>
 			<Link to='/forgot/password' className='text-danger'>
@@ -143,11 +147,21 @@ const Login = () => {
 					{loading ? (
 						// <h4 className='text-danger mb-2'>Loading...please wait..</h4>
 
-						<div className=' align-middle text-center  mx-auto'>
-							<div className='spinner-grow text-primary ' role='status'>
-								<span className='sr-only'>Loading...</span>
-							</div>
-						</div>
+						// <div className='align-middle text-center ml-auto'>
+						// 	<div className='spinner-grow text-primary ' role='status'>
+						// 		<span className='sr-only'>Loading...</span>
+						// 	</div>
+						// </div>
+
+						<Loader
+							type='Plane'
+							color='Blue'
+							secondaryColor='Red'
+							height={40}
+							width={40}
+							className='d-flex align-items-center justify-content-center
+						 position-relative'
+						/>
 					) : (
 						<>
 							<h4 className='text-primary mb-4 text-center'>Login</h4>

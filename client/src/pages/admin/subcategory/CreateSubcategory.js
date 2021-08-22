@@ -12,6 +12,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import CategoryForm from '../../../components/forms/CategoryForm';
 import Filter from '../../../components/forms/Filter';
 import { getCategories } from '../../../functions/category';
+import Loader from 'react-loader-spinner';
 
 const CreateSubcategory = () => {
 	const [name, setName] = useState('');
@@ -84,7 +85,15 @@ const CreateSubcategory = () => {
 				</div>
 				<div className='col-md-10'>
 					{loading ? (
-						<h5 className='text-danger'> loading.. </h5>
+						<Loader
+							type='Plane'
+							color='Blue'
+							secondaryColor='Red'
+							height={40}
+							width={40}
+							className='d-flex align-items-center justify-content-center
+						 position-relative p-2'
+						/>
 					) : (
 						<h4> Create Subcategory </h4>
 					)}
@@ -94,7 +103,8 @@ const CreateSubcategory = () => {
 						<select
 							name='category'
 							className='form-control'
-							onChange={(e) => setCategory(e.target.value)}>
+							onChange={(e) => setCategory(e.target.value)}
+						>
 							<option>please select</option>
 							{categories.length > 0 &&
 								categories.map((c) => (
