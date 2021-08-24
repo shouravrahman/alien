@@ -1,26 +1,30 @@
 import React from 'react'
 import { Select } from 'antd'
 const { Option } = Select
-const ProductCreateForm = ({
+
+const ProductUpdateForm = ({
 	handleChange,
 	handleSubmit,
 	values,
 	handleCategoryChange,
-	showSubcategories,
+	categories,
 	subcategoryOptions,
 	setValues,
+	arrayOfSubcategoryIds,
+	setArrayOfSubcategoryIds,
+	selectedCategory,
 }) => {
 	//destructure
 	const {
 		title,
 		description,
 		price,
-		categories,
-		// category,
-		subcategory,
-		// shipping,
+		// categories,
+		category,
+		// subcategory,
+		shipping,
 		quantity,
-		// images,
+		images,
 		color,
 		brand,
 	} = values
@@ -61,8 +65,11 @@ const ProductCreateForm = ({
 
 			<div className='form-group'>
 				<label>Shipping</label>
-				<select name='shipping' className='form-control' onChange={handleChange}>
-					<option>Please select</option>
+				<select
+					value={shipping === 'Yes' ? 'Yes' : 'No'}
+					name='shipping'
+					className='form-control'
+					onChange={handleChange}>
 					<option value='Yes'>Yes</option>
 					<option value='No'>No</option>
 				</select>
@@ -105,8 +112,8 @@ const ProductCreateForm = ({
 				<select
 					name='category'
 					className='form-control'
-					onChange={handleCategoryChange}>
-					<option>please select</option>
+					onChange={handleCategoryChange}
+					value={selectedCategory ? selectedCategory : category._id}>
 					{categories.length > 0 &&
 						categories.map((c) => (
 							<option key={c._id} value={c._id}>
@@ -116,28 +123,26 @@ const ProductCreateForm = ({
 				</select>
 			</div>
 
-			{showSubcategories && (
-				<div>
-					<label>Subcategories</label>
-					<Select
-						mode='multiple'
-						style={{ width: '100%' }}
-						placeholder='please select'
-						value={subcategory}
-						name='subcategory'
-						onChange={(value) => setValues({ ...values, subcategory: value })}>
-						{subcategoryOptions.length &&
-							subcategoryOptions.map((s) => (
-								<Option key={s._id} value={s._id}>
-									{s.name}
-								</Option>
-							))}
-					</Select>
-				</div>
-			)}
+			<div>
+				<label>Subcategories</label>
+				<Select
+					mode='multiple'
+					style={{ width: '100%' }}
+					value={arrayOfSubcategoryIds}
+					name='subcategory'
+					onChange={(value) => setArrayOfSubcategoryIds(value)}>
+					{subcategoryOptions.length &&
+						subcategoryOptions.map((s) => (
+							<Option key={s._id} value={s._id}>
+								{s.name}
+							</Option>
+						))}
+				</Select>
+			</div>
+
 			<button className='mt-2 btn btn-outline-info'>Save</button>
 		</form>
 	)
 }
 
-export default ProductCreateForm
+export default ProductUpdateForm
