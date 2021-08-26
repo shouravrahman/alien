@@ -5,3 +5,8 @@ a {
 body {
 	height: 100vh;
 }
+.slider img,
+.card-image {
+	max-height: 400px;
+	object-fit: cover;
+}

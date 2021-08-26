@@ -26,6 +26,7 @@ import UpdateSubcategory from './pages/admin/subcategory/UpdateSubcategory'
 import CreateProduct from './pages/admin/product/CreateProduct'
 import AllProducts from './pages/admin/product/AllProducts'
 import UpdateProduct from './pages/admin/product/UpdateProduct'
+import Product from './pages/Product'
 
 function App() {
 	const dispatch = useDispatch()
@@ -98,6 +99,7 @@ function App() {
 					path='/admin/product/:slug'
 					exact
 					component={UpdateProduct}></AdminRoute>
+				<Route path='/product/:slug' exact component={Product}></Route>
 			</Switch>
 		</>
 	)
