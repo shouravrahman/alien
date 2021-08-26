@@ -1,13 +1,13 @@
 import axios from 'axios'
 
 export const createProduct = async (product, authtoken) =>
-	await axios.post(`${process.env.REACT_APP_API}/product`, product, {
+	await axios.post(`${process.env.REACT_APP_API}/create`, product, {
 		headers: {
 			authtoken,
 		},
 	})
 export const updateProduct = async (slug, product, authtoken) =>
-	await axios.post(`${process.env.REACT_APP_API}/product/${slug}`, product, {
+	await axios.put(`${process.env.REACT_APP_API}/product/${slug}`, product, {
 		headers: {
 			authtoken,
 		},
@@ -27,7 +27,11 @@ export const removeProduct = async (slug, authtoken) =>
 
 //for homepage product show
 export const getProducts = async (sort, order, page) =>
-	await axios.post(`${process.env.REACT_APP_API}/products`, { sort, order, page })
+	await axios.post(`${process.env.REACT_APP_API}/products/list`, {
+		sort,
+		order,
+		page,
+	})
 
 export const totalProducts = async () =>
 	await axios.get(`${process.env.REACT_APP_API}/products/total`)

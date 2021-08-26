@@ -19,13 +19,15 @@ const AllProducts = () => {
 	const loadAllProducts = () => {
 		setLoading(true)
 
-		getProductsByCount(100).then((res) => {
-			setProducts(res.data)
-			setLoading(false)
-		})
-		setLoading(false).catch((err) => {
-			console.log(err)
-		})
+		getProductsByCount(100)
+			.then((res) => {
+				setProducts(res.data)
+				setLoading(false)
+			})
+			.catch((err) => {
+				setLoading(false)
+				console.log(err)
+			})
 	}
 
 	const handleRemove = (slug) => {

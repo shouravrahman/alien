@@ -61,6 +61,7 @@ const CreateProduct = () => {
 		e.preventDefault()
 		setValues({ ...values, subcategory: [], category: e.target.value })
 		getSubcategories(e.target.value).then((res) => {
+			console.log(res)
 			setSubcategoryOptions(res.data)
 		})
 		setShowSubcategories(true)

@@ -17,8 +17,8 @@ const initialState = {
 	shipping: '',
 	quantity: '',
 	images: [],
-	colors: '',
-	brands: '',
+	// colors: '',
+	// brands: '',
 	color: '',
 	brand: '',
 }
@@ -33,12 +33,20 @@ const UpdateProduct = ({ match, history }) => {
 
 	const { user } = useSelector((state) => ({ ...state }))
 
+	//router param
+	const { slug } = match.params
+
 	useEffect(() => {
 		loadProduct()
 		loadCategories()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
+	const loadCategories = () =>
+		getCategories().then((categories) => {
+			// setCategories({ ...values, categories: categories.data })
+			setCategories(categories.data)
+		})
 	const loadProduct = () => {
 		getProduct(slug)
 			.then((res) => {
@@ -61,11 +69,6 @@ const UpdateProduct = ({ match, history }) => {
 				console.log(err)
 			})
 	}
-
-	const loadCategories = () =>
-		getCategories().then((categories) =>
-			setCategories({ ...values, categories: categories.data })
-		)
 
 	const handleChange = (e) => {
 		setValues({ ...values, [e.target.name]: e.target.value })
@@ -102,9 +105,6 @@ const UpdateProduct = ({ match, history }) => {
 				toast.error(err.response.data.err)
 			})
 	}
-
-	//router param
-	const { slug } = match.params
 
 	return (
 		<div className='container-fluid'>

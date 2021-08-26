@@ -32,7 +32,7 @@ const ProductListItems = ({ product }) => {
 							key={s._id}
 							to={`/subcategory/${s.slug}`}
 							className='label label-default label-pill pull-xs-right'>
-							{subcategory.name}
+							{s.name}
 						</Link>
 					))}
 				</li>

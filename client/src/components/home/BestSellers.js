@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from 'react'
 import LoadingCard from '../cards/LoadingCard'
 import ProductCard from '../cards/ProductCard'
-import { getProducts, totalProducts } from '../../functions/product '
+import { getProducts, totalProducts } from '../../functions/product'
+
 import { Pagination } from 'antd'
 
 const BestSellers = () => {

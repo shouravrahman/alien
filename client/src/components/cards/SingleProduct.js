@@ -11,6 +11,7 @@ const { TabPane } = Tabs
 
 const SingleProduct = ({ product }) => {
 	const { description, title, images } = product
+	// console.log(product)
 
 	const defaultImage =
 		'https://images.unsplash.com/photo-1597673030062-0a0f1a801a31?ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTR8fGxhcHRvcHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60'
@@ -19,15 +20,14 @@ const SingleProduct = ({ product }) => {
 		<>
 			<div className='col-md-7'>
 				{images && images.length ? (
-					<Carousel showArrows infiniteLoop autoPlay showIndicators></Carousel>
+					<Carousel showArrows={true} infiniteLoop autoPlay>
+						{images &&
+							images.map((i) => <img src={i.url} key={i.public_id} alt={title} />)}
+					</Carousel>
 				) : (
 					<Card
 						cover={
-							<img
-								src={images && images.length ? images[0].url : defaultImage}
-								className='mb-3 card-image'
-								alt={title}
-							/>
+							<img src={defaultImage} className='mb-3 card-image' alt={title} />
 						}></Card>
 				)}
 				<Tabs type='card'>
@@ -53,8 +53,9 @@ const SingleProduct = ({ product }) => {
 							<br />
 							Add to Wishlist
 						</Link>,
-					]}></Card>
-				<ProductListItems product={product} />
+					]}>
+					<ProductListItems product={product} />
+				</Card>
 			</div>
 		</>
 	)
