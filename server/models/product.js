@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
+const mongoose = require('mongoose')
+const { Schema } = mongoose
 // const ObjectId = Schema.Types.ObjectId;
-const { ObjectId } = mongoose.Schema;
+const { ObjectId } = mongoose.Schema
 
 // const ObjectId = Schema.Types.ObjectId;
 // const { ObjectId } = mongoose.Schema.Types.ObjectId;
@@ -63,11 +63,13 @@ const productSchema = new Schema(
 			type: String,
 			// enum: ['define brands here'],
 		},
-		// ratings:[{
-		//    star:Number,
-		//    postedBy:{type:ObjectId,ref:'User'}
-		// }],
+		ratings: [
+			{
+				star: Number,
+				postedBy: { type: ObjectId, ref: 'User' },
+			},
+		],
 	},
 	{ timestamps: true }
-);
-module.exports = mongoose.model('Product', productSchema);
+)
+module.exports = mongoose.model('Product', productSchema)

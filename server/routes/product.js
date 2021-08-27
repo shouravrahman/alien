@@ -10,6 +10,7 @@ const {
 	update,
 	list,
 	totalProducts,
+	productStar,
 } = require('../controllers/product')
 
 //middlewares
@@ -24,5 +25,5 @@ router.delete('/product/:slug', authCheck, adminCheck, remove)
 router.put('/product/:slug', authCheck, adminCheck, update)
 router.get('/product/:slug', read)
 router.post('/products/list', list) //for fetching products in homepage based on new arrivals and bestseller
-
+router.put('/product/star/:productId', authCheck, productStar) // for star rating update
 module.exports = router
