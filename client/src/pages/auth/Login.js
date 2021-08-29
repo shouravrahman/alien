@@ -1,45 +1,56 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import React, { useEffect, useState } from 'react';
-import { auth, googleAuthProvider } from '../../firebase';
-import { toast } from 'react-toastify';
-import { Button } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
-import { MailOutlined, GoogleOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
-import { createOrUpdateUser } from '../../functions/auth';
-import Loader from 'react-loader-spinner';
+import React, { useEffect, useState } from 'react'
+import { auth, googleAuthProvider } from '../../firebase'
+import { toast } from 'react-toastify'
+import { Button } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
+import { MailOutlined, GoogleOutlined } from '@ant-design/icons'
+import { Link } from 'react-router-dom'
+import { createOrUpdateUser } from '../../functions/auth'
+import Loader from 'react-loader-spinner'
 
 const Login = () => {
-	const [email, setEmail] = useState('shouravrahman006@gmail.com');
-	const [password, setPassword] = useState('hello1234');
-	const [loading, setLoading] = useState(false);
-	const dispatch = useDispatch();
-	let history = useHistory();
+	const [email, setEmail] = useState('shouravrahman006@gmail.com')
+	const [password, setPassword] = useState('hello1234')
+	const [loading, setLoading] = useState(false)
+	const dispatch = useDispatch()
+	let history = useHistory()
 
-	const { user } = useSelector((state) => ({ ...state }));
+	const { user } = useSelector((state) => ({ ...state }))
 
 	useEffect(() => {
-		if (user && user.token) {
-			history.push('/');
+		let intended = history.location.state
+
+		if (intended) {
+			return
+		} else {
+			if (user && user.token) {
+				history.push('/')
+			}
 		}
-	}, [user]);
+	}, [user])
 
 	const roleBasedRedirect = (res) => {
-		if (res.data.role === 'admin') {
-			history.push('/admin/dashboard');
+		let intended = history.location.state
+		if (intended) {
+			history.push(intended.from)
 		} else {
-			history.push('user/history');
+			if (res.data.role === 'admin') {
+				history.push('/admin/dashboard')
+			} else {
+				history.push('user/history')
+			}
 		}
-	};
+	}
 	const handleSubmit = async (e) => {
-		e.preventDefault();
-		setLoading(true);
+		e.preventDefault()
+		setLoading(true)
 		try {
-			const result = await auth.signInWithEmailAndPassword(email, password);
-			const { user } = result;
-			const idTokenResult = await user.getIdTokenResult();
+			const result = await auth.signInWithEmailAndPassword(email, password)
+			const { user } = result
+			const idTokenResult = await user.getIdTokenResult()
 			// console.log(idTokenResult.token);
 			// console.log(idTokenResult.token);ss
 			createOrUpdateUser(idTokenResult.token)
@@ -53,22 +64,22 @@ const Login = () => {
 							role: res.data.role,
 							_id: res.data._id,
 						},
-					});
-					roleBasedRedirect(res);
+					})
+					roleBasedRedirect(res)
 				})
-				.catch((err) => console.log(err));
+				.catch((err) => console.log(err))
 			// history.push('/');
 		} catch (error) {
-			toast.error(error.message);
-			setLoading(false);
+			toast.error(error.message)
+			setLoading(false)
 		}
-	};
+	}
 	const googleLogin = async () => {
 		auth
 			.signInWithPopup(googleAuthProvider)
 			.then(async (result) => {
-				const { user } = result;
-				const idTokenResult = await user.getIdTokenResult();
+				const { user } = result
+				const idTokenResult = await user.getIdTokenResult()
 				createOrUpdateUser(idTokenResult.token)
 					.then((res) => {
 						dispatch({
@@ -80,14 +91,14 @@ const Login = () => {
 								role: res.data.role,
 								_id: res.data._id,
 							},
-						});
-						roleBasedRedirect(res);
+						})
+						roleBasedRedirect(res)
 					})
-					.catch((err) => console.log(err));
+					.catch((err) => console.log(err))
 				// history.push('/');
 			})
-			.catch((error) => toast.error(error.message));
-	};
+			.catch((error) => toast.error(error.message))
+	}
 
 	//write the form in a function for better splitting
 	const loginForm = () => (
@@ -120,8 +131,7 @@ const Login = () => {
 				shape='round'
 				icon={<MailOutlined />}
 				size='large'
-				disabled={!email || password.length < 6}
-			>
+				disabled={!email || password.length < 6}>
 				Sign In With Email/Password
 			</Button>
 			<Button
@@ -131,15 +141,14 @@ const Login = () => {
 				shape='round'
 				icon={<GoogleOutlined />}
 				size='large'
-				onClick={googleLogin}
-			>
+				onClick={googleLogin}>
 				Sign In With Google
 			</Button>
 			<Link to='/forgot/password' className='text-danger'>
 				Forgot password
 			</Link>
 		</form>
-	);
+	)
 	return (
 		<div className='container p-5'>
 			<div className='row'>
@@ -171,7 +180,7 @@ const Login = () => {
 				</div>
 			</div>
 		</div>
-	);
-};
+	)
+}
 
-export default Login;
+export default Login

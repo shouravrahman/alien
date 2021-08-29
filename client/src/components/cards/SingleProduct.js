@@ -6,11 +6,14 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loa
 import { Carousel } from 'react-responsive-carousel'
 import ProductListItems from './ProductListItems'
 // import { Tabs } from 'antd'
-
+// import StarRating from 'react-star-ratings'
+import RatingModal from '../modal/RatingModal'
+import starRatings from 'react-star-ratings/build/star-ratings'
+import { showAverage } from '../../functions/rating'
 const { TabPane } = Tabs
 
-const SingleProduct = ({ product }) => {
-	const { description, title, images } = product
+const SingleProduct = ({ product, onStarClick, star }) => {
+	const { description, title, images, _id } = product
 	// console.log(product)
 
 	const defaultImage =
@@ -42,6 +45,12 @@ const SingleProduct = ({ product }) => {
 
 			<div className='col-md-5'>
 				<h1 className='bg-info p-3'>{title}</h1>
+				{product && product.ratings && product.ratings.length > 0 ? (
+					showAverage(product)
+				) : (
+					<div className='text-center pt-1 pb-2'>No rating yet</div>
+				)}
+
 				<Card
 					actions={[
 						<>
@@ -53,6 +62,16 @@ const SingleProduct = ({ product }) => {
 							<br />
 							Add to Wishlist
 						</Link>,
+						<RatingModal>
+							<starRatings
+								name={_id}
+								numberOfStars={5}
+								rating={star}
+								changeRating={onStarClick}
+								isSelectable={true}
+								starRatedColor='pink'
+							/>
+						</RatingModal>,
 					]}>
 					<ProductListItems product={product} />
 				</Card>

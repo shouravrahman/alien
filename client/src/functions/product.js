@@ -35,3 +35,14 @@ export const getProducts = async (sort, order, page) =>
 
 export const totalProducts = async () =>
 	await axios.get(`${process.env.REACT_APP_API}/products/total`)
+
+export const productStar = async (productId, star, authtoken) =>
+	await axios.put(
+		`${process.env.REACT_APP_API}/product/star/${productId}`,
+		{ star }, //object syntax to grab as req.body.star in the backend
+		{
+			headers: {
+				authtoken,
+			},
+		}
+	)
