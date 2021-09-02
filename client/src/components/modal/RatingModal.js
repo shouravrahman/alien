@@ -6,7 +6,7 @@ import { StarOutlined } from '@ant-design/icons'
 import { useHistory, useParams } from 'react-router-dom'
 
 const RatingModal = ({ children }) => {
-	const user = useSelector((state) => ({ ...state }))
+	const { user } = useSelector((state) => ({ ...state }))
 
 	const [modalVisible, setModalVisible] = useState(false)
 	let history = useHistory()
@@ -36,7 +36,7 @@ const RatingModal = ({ children }) => {
 					setModalVisible(false)
 					toast.success('Thanks for your review.It will appear soon')
 				}}
-				onCancel={setModalVisible(false)}>
+				onCancel={() => setModalVisible(false)}>
 				{children}
 			</Modal>
 		</>

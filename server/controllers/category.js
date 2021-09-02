@@ -1,6 +1,7 @@
 //model
 const Category = require('../models/category')
 const Subcategory = require('../models/subcategory')
+const Product = require('../models/product')
 //imports
 const slugify = require('slugify')
 //functions for each type of request
@@ -28,7 +29,14 @@ exports.read = async (req, res) => {
 	const specificCategory = await Category.findOne({
 		slug: req.params.slug,
 	}).exec()
-	res.json(specificCategory)
+	const products = await Product.find({ specificCategory })
+		.populate('category')
+		.exec()
+
+	res.json({
+		specificCategory,
+		products,
+	})
 }
 exports.remove = async (req, res) => {
 	try {

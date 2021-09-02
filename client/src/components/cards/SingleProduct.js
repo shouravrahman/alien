@@ -8,7 +8,8 @@ import ProductListItems from './ProductListItems'
 // import { Tabs } from 'antd'
 // import StarRating from 'react-star-ratings'
 import RatingModal from '../modal/RatingModal'
-import starRatings from 'react-star-ratings/build/star-ratings'
+// import starRatings from 'react-star-ratings/build/star-ratings'
+import StarRatings from 'react-star-ratings'
 import { showAverage } from '../../functions/rating'
 const { TabPane } = Tabs
 
@@ -63,13 +64,13 @@ const SingleProduct = ({ product, onStarClick, star }) => {
 							Add to Wishlist
 						</Link>,
 						<RatingModal>
-							<starRatings
+							<StarRatings
 								name={_id}
 								numberOfStars={5}
 								rating={star}
 								changeRating={onStarClick}
 								isSelectable={true}
-								starRatedColor='pink'
+								starRatedColor='red'
 							/>
 						</RatingModal>,
 					]}>

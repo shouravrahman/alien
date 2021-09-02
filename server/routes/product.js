@@ -11,6 +11,8 @@ const {
 	list,
 	totalProducts,
 	productStar,
+	listRelated,
+	searchFilters,
 } = require('../controllers/product')
 
 //middlewares
@@ -26,4 +28,8 @@ router.put('/product/:slug', authCheck, adminCheck, update)
 router.get('/product/:slug', read)
 router.post('/products/list', list) //for fetching products in homepage based on new arrivals and bestseller
 router.put('/product/star/:productId', authCheck, productStar) // for star rating update
+router.get('/product/related/:productId', listRelated)
+//for search
+router.post('/search/filters', searchFilters)
+
 module.exports = router

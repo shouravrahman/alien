@@ -1,35 +1,37 @@
-import React, { useState } from 'react';
-import { Menu } from 'antd';
+import React, { useState } from 'react'
+import { Menu } from 'antd'
 import {
 	HomeOutlined,
 	UserAddOutlined,
 	UserOutlined,
 	LogoutOutlined,
 	SettingOutlined,
-} from '@ant-design/icons';
-import { Link, useHistory } from 'react-router-dom';
-import { firebaseApp } from '../../firebase';
-import { useDispatch, useSelector } from 'react-redux';
+	ShoppingOutlined,
+} from '@ant-design/icons'
+import { Link, useHistory } from 'react-router-dom'
+import { firebaseApp } from '../../firebase'
+import { useDispatch, useSelector } from 'react-redux'
+import Searchbar from '../forms/Searchbar'
 
-const { SubMenu, Item } = Menu;
+const { SubMenu, Item } = Menu
 
 const Header = () => {
-	let dispatch = useDispatch();
-	let history = useHistory();
-	let { user } = useSelector((state) => ({ ...state }));
-	const [current, setCurrent] = useState('home');
+	let dispatch = useDispatch()
+	let history = useHistory()
+	let { user } = useSelector((state) => ({ ...state }))
+	const [current, setCurrent] = useState('home')
 
 	const handleClick = (e) => {
-		setCurrent(e.key);
-	};
+		setCurrent(e.key)
+	}
 	const logout = () => {
-		firebaseApp.auth().signOut();
+		firebaseApp.auth().signOut()
 		dispatch({
 			type: 'LOGOUT',
 			payload: null,
-		});
-		history.push('/login');
-	};
+		})
+		history.push('/login')
+	}
 
 	return (
 		<Menu
@@ -42,13 +44,15 @@ const Header = () => {
 			<Item key='home' icon={<HomeOutlined />}>
 				<Link to='/'>Home</Link>
 			</Item>
+			<Item key='shop' icon={<ShoppingOutlined />}>
+				<Link to='/shop'>Shop</Link>
+			</Item>
 			{user && (
 				<SubMenu
 					key='SubMenu'
 					icon={<SettingOutlined />}
 					title={user.email && user.email.split('@')[0]}
-					className='ml-auto'
-				>
+					className='ml-auto'>
 					{user && user.role === 'subscriber' && (
 						<Item key='dashboard'>
 							<Link to='/user/history'>Dashboard</Link>
@@ -71,8 +75,7 @@ const Header = () => {
 					key='register'
 					icon={<UserAddOutlined />}
 					// style={{ marginLeft: 'auto' }}
-					className='ml-auto'
-				>
+					className='ml-auto'>
 					<Link to='/register'>Register</Link>
 				</Item>
 			)}
@@ -81,9 +84,13 @@ const Header = () => {
 					<Link to='/login'>Login</Link>
 				</Item>
 			)}
+
+			<div className='p-1 d-inline'>
+				<Searchbar />
+			</div>
 			{/* </div> */}
 		</Menu>
-	);
-};
+	)
+}
 
-export default Header;
+export default Header
