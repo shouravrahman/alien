@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 const { Meta } = Card
 
 const ProductCard = ({ product }) => {
-	const { title, description, images, slug } = product
+	const { title, description, images, slug, price } = product
 	const defaultImage =
 		'https://images.unsplash.com/photo-1597673030062-0a0f1a801a31?ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTR8fGxhcHRvcHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60'
 
@@ -33,7 +33,7 @@ const ProductCard = ({ product }) => {
 				/>
 			}>
 			<Meta
-				title={title}
+				title={`${title} - $${price}`}
 				description={`${description && description.substring(0, 40)}...`}
 			/>
 		</Card>

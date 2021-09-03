@@ -172,10 +172,41 @@ const handleQuery = async (req, res, query) => {
 
 	res.json(products)
 }
+const handlePrice = async (req, res, price) => {
+	try {
+		let products = await Product.find({
+			price: {
+				$gte: price[0],
+				$lte: price[1],
+			},
+		})
+			.populate('category', '_id name')
+			.populate('subcategory', '_id name')
+			.populate('postedBy', '_id name')
+			.exec()
+		res.json(products)
+	} catch (err) {
+		console.log(error)
+	}
+}
+
+// const handleCategory = async ( req,res,category) => {
+// 	try{
+
+// 	} catch {
+
+// 	}
+// }
 exports.searchFilters = async (req, res) => {
-	const { query } = req.body
+	const { query, price } = req.body
 
 	if (query) {
 		await handleQuery(req, res, query)
 	}
+	if (price !== undefined) {
+		await handlePrice(req, res, price)
+	}
+	// if(category){
+	// 	await handleCategory(req,res,category)
+	// }
 }
