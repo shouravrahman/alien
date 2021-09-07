@@ -1,15 +1,22 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import { fetchProductsByFilter, getProductsByCount } from '../functions/product'
+import { getCategories } from '../functions/category'
 import { useDispatch, useSelector } from 'react-redux'
 import ProductCard from '../components/cards/ProductCard'
-import { Menu, Slider } from 'antd'
-import { DollarOutlined } from '@ant-design/icons'
+import Star from '../components/forms/Star'
+import { Menu, Slider, Checkbox } from 'antd'
+import { DollarOutlined, DownSquareOutlined, StarOutlined } from '@ant-design/icons'
 
 const { SubMenu, ItemGroup } = Menu
 const Shop = () => {
 	const [products, setProducts] = useState([])
 	const [loading, setLoading] = useState(false)
 	const [price, setPrice] = useState([0, 0])
+	const [categories, setCategories] = useState([])
+	const [categoryIds, setCategoryIds] = useState([])
+	const [star, setStar] = useState('')
 	const [ok, setOk] = useState(false)
 
 	const dispatch = useDispatch()
@@ -27,6 +34,7 @@ const Shop = () => {
 	useEffect(() => {
 		setLoading(true)
 		loadAllProducts()
+		getCategories().then((res) => setCategories(res.data))
 	}, [])
 
 	const loadAllProducts = () => {
@@ -51,13 +59,76 @@ const Shop = () => {
 
 	const handleSlider = (value) => {
 		dispatch({
-			type: 'SERACH_QUERY',
+			type: 'SEARCH_QUERY',
 			payload: { text: '' },
 		})
+		setCategoryIds([])
+		setStar('')
+
 		setPrice(value)
 		setTimeout(() => {
 			setOk(!ok)
 		}, 400)
+	}
+	//4.load products based on categories
+	//show all categories in a checkbox
+	const showCategories = () => {
+		categories.map((c) => (
+			<div key={c._id}>
+				<Checkbox
+					onChange={handleCheck}
+					className='pb-2 pl-4 pr-4'
+					value={c._id}
+					checked={categoryIds.includes(c._id)}
+					name='category'>
+					{c.name}
+				</Checkbox>
+				<br />
+			</div>
+		))
+	}
+	const handleCheck = (e) => {
+		dispatch({
+			type: 'SEARCH_QUERY',
+			payload: { text: '' },
+		})
+		setPrice([0, 0])
+		setStar('')
+
+		let inTheState = [...categoryIds]
+		let justChecked = e.target.value
+		let foundInTheState = inTheState.indexOf(justChecked)
+
+		if (foundInTheState === -1) {
+			inTheState.push(justChecked)
+		} else {
+			inTheState.splice(foundInTheState, 1)
+		}
+
+		setCategoryIds(inTheState)
+
+		fetchProducts({ category: inTheState })
+	}
+	//5.find products based on star rating
+	const handleStarClick = (num) => {
+		dispatch({
+			type: 'SEARCH_QUERY',
+			payload: { text: '' },
+		})
+		setPrice([0, 0])
+		setCategoryIds([])
+		setStar(num)
+		fetchProducts({ stars: num })
+	}
+
+	const showStars = () => {
+		;<div className='pr-4 pl-4 pb-2'>
+			<Star starClick={handleStarClick} numberOfStars={5} />
+			<Star starClick={handleStarClick} numberOfStars={4} />
+			<Star starClick={handleStarClick} numberOfStars={3} />
+			<Star starClick={handleStarClick} numberOfStars={2} />
+			<Star starClick={handleStarClick} numberOfStars={1} />
+		</div>
 	}
 
 	return (
@@ -68,6 +139,7 @@ const Shop = () => {
 					<hr />
 
 					<Menu defaultOpenKeys={['1', '2']} mode='inline'>
+						{/* for price */}
 						<SubMenu
 							key='1'
 							title={
@@ -86,6 +158,26 @@ const Shop = () => {
 									min='100'
 								/>
 							</div>
+						</SubMenu>
+						{/* for categories */}
+						<SubMenu
+							key='2'
+							title={
+								<span className='h6'>
+									<DownSquareOutlined /> Categories
+								</span>
+							}>
+							<div style={{ marginTop: '-10px' }}>{showCategories()}</div>
+						</SubMenu>
+						{/* for rating*/}
+						<SubMenu
+							key='3'
+							title={
+								<span className='h6'>
+									<StarOutlined /> Rating
+								</span>
+							}>
+							<div style={{ marginTop: '-10px' }}>{showStars()}</div>
 						</SubMenu>
 					</Menu>
 				</div>
