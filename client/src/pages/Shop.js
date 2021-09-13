@@ -3,10 +3,11 @@
 import React, { useEffect, useState } from 'react'
 import { fetchProductsByFilter, getProductsByCount } from '../functions/product'
 import { getCategories } from '../functions/category'
+import { getSubcategories } from '../functions/subcategory'
 import { useDispatch, useSelector } from 'react-redux'
 import ProductCard from '../components/cards/ProductCard'
 import Star from '../components/forms/Star'
-import { Menu, Slider, Checkbox } from 'antd'
+import { Menu, Slider, Checkbox, Radio } from 'antd'
 import { DollarOutlined, DownSquareOutlined, StarOutlined } from '@ant-design/icons'
 
 const { SubMenu, ItemGroup } = Menu
@@ -15,8 +16,22 @@ const Shop = () => {
 	const [loading, setLoading] = useState(false)
 	const [price, setPrice] = useState([0, 0])
 	const [categories, setCategories] = useState([])
+	const [subcategories, setSubcategories] = useState([])
+	//TODO => dont use hardcoded values for brands or colors
+	const [brands, setBrands] = useState(['Apple', 'HP', 'Microsoft', 'Lenovo'])
+	const [colors, setColors] = useState([
+		'Black',
+		'White',
+		'Golden',
+		'Space-gray',
+		'Silver',
+	])
+	//TODO => dont use hardcoded values for brands or colors
+
+	const [subcategory, setSubcategory] = useState('')
 	const [categoryIds, setCategoryIds] = useState([])
 	const [star, setStar] = useState('')
+	const [brand, setBrand] = useState('')
 	const [ok, setOk] = useState(false)
 
 	const dispatch = useDispatch()
@@ -35,6 +50,7 @@ const Shop = () => {
 		setLoading(true)
 		loadAllProducts()
 		getCategories().then((res) => setCategories(res.data))
+		getSubcategories().then((res) => setSubcategories(res.data))
 	}, [])
 
 	const loadAllProducts = () => {
@@ -64,6 +80,8 @@ const Shop = () => {
 		})
 		setCategoryIds([])
 		setStar('')
+		setSubcategories('')
+		setBrand('')
 
 		setPrice(value)
 		setTimeout(() => {
@@ -94,6 +112,8 @@ const Shop = () => {
 		})
 		setPrice([0, 0])
 		setStar('')
+		setSubcategories('')
+		setBrand('')
 
 		let inTheState = [...categoryIds]
 		let justChecked = e.target.value
@@ -117,18 +137,74 @@ const Shop = () => {
 		})
 		setPrice([0, 0])
 		setCategoryIds([])
+		setSubcategories('')
+		setBrand('')
+
 		setStar(num)
 		fetchProducts({ stars: num })
 	}
-
 	const showStars = () => {
-		;<div className='pr-4 pl-4 pb-2'>
-			<Star starClick={handleStarClick} numberOfStars={5} />
-			<Star starClick={handleStarClick} numberOfStars={4} />
-			<Star starClick={handleStarClick} numberOfStars={3} />
-			<Star starClick={handleStarClick} numberOfStars={2} />
-			<Star starClick={handleStarClick} numberOfStars={1} />
-		</div>
+		return (
+			<div className='pr-4 pl-4 pb-2'>
+				<Star starClick={handleStarClick} numberOfStars={5} />
+				<Star starClick={handleStarClick} numberOfStars={4} />
+				<Star starClick={handleStarClick} numberOfStars={3} />
+				<Star starClick={handleStarClick} numberOfStars={2} />
+				<Star starClick={handleStarClick} numberOfStars={1} />
+			</div>
+		)
+	}
+	//6.show products based on subcategories
+
+	const showSubcategories = () =>
+		subcategories.map((s) => (
+			<div
+				key={s._id}
+				style={{ cursor: 'pointer' }}
+				className='p-1 m-1 badge badge-secondary'
+				onClick={() => handleSubcategories(s)}>
+				{s.name}
+			</div>
+		))
+
+	const handleSubcategories = (s) => {
+		dispatch({
+			type: 'SEARCH_QUERY',
+			payload: { text: '' },
+		})
+		setPrice([0, 0])
+		setCategoryIds([])
+		setStar('')
+		setBrand('')
+
+		fetchProducts({ subcategory })
+	}
+
+	//7.show products based on brands
+	const showBrands = () =>
+		brands.map((b) => (
+			<Radio
+				value={b}
+				name={b}
+				checked={b === brand}
+				onChange={handleBrand}
+				className='pb-1 pl-4 pr-4'>
+				{b}
+			</Radio>
+		))
+
+	const handleBrand = (e) => {
+		dispatch({
+			type: 'SEARCH_QUERY',
+			payload: { text: '' },
+		})
+		setPrice([0, 0])
+		setCategoryIds([])
+		setStar('')
+		setSubcategories('')
+
+		setBrand(e.target.value)
+		fetchProducts({ brand: e.target.value })
 	}
 
 	return (
@@ -138,7 +214,7 @@ const Shop = () => {
 					<h4>Search/Filter</h4>
 					<hr />
 
-					<Menu defaultOpenKeys={['1', '2']} mode='inline'>
+					<Menu defaultOpenKeys={['1', '2', '3', '4', '5']} mode='inline'>
 						{/* for price */}
 						<SubMenu
 							key='1'
@@ -178,6 +254,27 @@ const Shop = () => {
 								</span>
 							}>
 							<div style={{ marginTop: '-10px' }}>{showStars()}</div>
+						</SubMenu>
+						{/* for subcategories */}
+						<SubMenu
+							key='4'
+							title={
+								<span className='h6'>
+									<DownSquareOutlined /> Subcategories
+								</span>
+							}>
+							<div style={{ marginTop: '-10px' }}>{showSubcategories()}</div>
+						</SubMenu>
+						<SubMenu
+							key='5'
+							title={
+								<span className='h6'>
+									<DownSquareOutlined /> Brands
+								</span>
+							}>
+							<div style={{ marginTop: '-10px' }} className='pr-5'>
+								{showBrands()}
+							</div>
 						</SubMenu>
 					</Menu>
 				</div>
