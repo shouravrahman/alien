@@ -32,6 +32,8 @@ const Shop = () => {
 	const [categoryIds, setCategoryIds] = useState([])
 	const [star, setStar] = useState('')
 	const [brand, setBrand] = useState('')
+	const [color, setColor] = useState('')
+
 	const [ok, setOk] = useState(false)
 
 	const dispatch = useDispatch()
@@ -82,6 +84,7 @@ const Shop = () => {
 		setStar('')
 		setSubcategories('')
 		setBrand('')
+		setColor('')
 
 		setPrice(value)
 		setTimeout(() => {
@@ -114,6 +117,7 @@ const Shop = () => {
 		setStar('')
 		setSubcategories('')
 		setBrand('')
+		setColor('')
 
 		let inTheState = [...categoryIds]
 		let justChecked = e.target.value
@@ -139,6 +143,7 @@ const Shop = () => {
 		setCategoryIds([])
 		setSubcategories('')
 		setBrand('')
+		setColor('')
 
 		setStar(num)
 		fetchProducts({ stars: num })
@@ -176,6 +181,7 @@ const Shop = () => {
 		setCategoryIds([])
 		setStar('')
 		setBrand('')
+		setColor('')
 
 		fetchProducts({ subcategory })
 	}
@@ -202,11 +208,39 @@ const Shop = () => {
 		setCategoryIds([])
 		setStar('')
 		setSubcategories('')
+		setColor('')
 
 		setBrand(e.target.value)
 		fetchProducts({ brand: e.target.value })
 	}
 
+	//8.show products based on colors
+	const showColors = () =>
+		colors.map((c) => (
+			<Radio
+				value={c}
+				name={c}
+				checked={c === color}
+				onChange={handleColor}
+				className='pb-1 pl-4 pr-4'>
+				{c}
+			</Radio>
+		))
+
+	const handleColor = (e) => {
+		dispatch({
+			type: 'SEARCH_QUERY',
+			payload: { text: '' },
+		})
+		setPrice([0, 0])
+		setCategoryIds([])
+		setStar('')
+		setSubcategories('')
+		setBrand('')
+
+		setColor(e.target.value)
+		fetchProducts({ color: e.target.value })
+	}
 	return (
 		<div className='container-fluid'>
 			<div className='row'>
@@ -274,6 +308,17 @@ const Shop = () => {
 							}>
 							<div style={{ marginTop: '-10px' }} className='pr-5'>
 								{showBrands()}
+							</div>
+						</SubMenu>
+						<SubMenu
+							key='6'
+							title={
+								<span className='h6'>
+									<DownSquareOutlined /> Colors
+								</span>
+							}>
+							<div style={{ marginTop: '-10px' }} className='pr-5'>
+								{showColors()}
 							</div>
 						</SubMenu>
 					</Menu>
