@@ -33,6 +33,7 @@ const Shop = () => {
 	const [star, setStar] = useState('')
 	const [brand, setBrand] = useState('')
 	const [color, setColor] = useState('')
+	const [shipping, setShipping] = useState('')
 
 	const [ok, setOk] = useState(false)
 
@@ -85,6 +86,7 @@ const Shop = () => {
 		setSubcategories('')
 		setBrand('')
 		setColor('')
+		setShipping('')
 
 		setPrice(value)
 		setTimeout(() => {
@@ -118,6 +120,7 @@ const Shop = () => {
 		setSubcategories('')
 		setBrand('')
 		setColor('')
+		setShipping('')
 
 		let inTheState = [...categoryIds]
 		let justChecked = e.target.value
@@ -144,6 +147,7 @@ const Shop = () => {
 		setSubcategories('')
 		setBrand('')
 		setColor('')
+		setShipping('')
 
 		setStar(num)
 		fetchProducts({ stars: num })
@@ -182,6 +186,7 @@ const Shop = () => {
 		setStar('')
 		setBrand('')
 		setColor('')
+		setShipping('')
 
 		fetchProducts({ subcategory })
 	}
@@ -209,6 +214,7 @@ const Shop = () => {
 		setStar('')
 		setSubcategories('')
 		setColor('')
+		setShipping('')
 
 		setBrand(e.target.value)
 		fetchProducts({ brand: e.target.value })
@@ -237,10 +243,47 @@ const Shop = () => {
 		setStar('')
 		setSubcategories('')
 		setBrand('')
+		setShipping('')
 
 		setColor(e.target.value)
 		fetchProducts({ color: e.target.value })
 	}
+
+	//8.show products based on shipping
+	const showShipping = () => (
+		<>
+			<Checkbox
+				className='pb-2 pl-4 pr-4'
+				onChange={handleShippingChange}
+				value='Yes'
+				checked={shipping === 'Yes'}>
+				Yes
+			</Checkbox>
+			<Checkbox
+				className='pb-2 pl-4 pr-4'
+				onChange={handleShippingChange}
+				value='No'
+				checked={shipping === 'No'}>
+				No
+			</Checkbox>
+		</>
+	)
+	const handleShippingChange = (e) => {
+		dispatch({
+			type: 'SEARCH_QUERY',
+			payload: { text: '' },
+		})
+		setPrice([0, 0])
+		setCategoryIds([])
+		setStar('')
+		setSubcategories('')
+		setBrand('')
+		setColor('')
+
+		setShipping(e.target.value)
+		fetchProducts({ shipping: e.target.value })
+	}
+
 	return (
 		<div className='container-fluid'>
 			<div className='row'>
@@ -299,6 +342,9 @@ const Shop = () => {
 							}>
 							<div style={{ marginTop: '-10px' }}>{showSubcategories()}</div>
 						</SubMenu>
+
+						{/* for brands*/}
+
 						<SubMenu
 							key='5'
 							title={
@@ -310,6 +356,9 @@ const Shop = () => {
 								{showBrands()}
 							</div>
 						</SubMenu>
+
+						{/* for colors */}
+
 						<SubMenu
 							key='6'
 							title={
@@ -319,6 +368,19 @@ const Shop = () => {
 							}>
 							<div style={{ marginTop: '-10px' }} className='pr-5'>
 								{showColors()}
+							</div>
+						</SubMenu>
+
+						{/* for shipping*/}
+						<SubMenu
+							key='7'
+							title={
+								<span className='h6'>
+									<DownSquareOutlined /> Shipping
+								</span>
+							}>
+							<div style={{ marginTop: '-10px' }} className='pr-5'>
+								{showShipping()}
 							</div>
 						</SubMenu>
 					</Menu>
