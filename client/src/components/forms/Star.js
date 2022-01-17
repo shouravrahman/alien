@@ -10,7 +10,7 @@ const Star = ({ starClick, numberOfStars }) => {
 				starDimension='20px'
 				starSpacing='20px'
 				starHoverColor='red'
-				starEmptyColor='lightgrey'
+				starEmptyColor='red'
 			/>
 			<br />
 		</>
