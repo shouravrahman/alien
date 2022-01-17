@@ -57,11 +57,20 @@ const productSchema = new Schema(
 		},
 		color: {
 			type: String,
-			// enum: ['Black', 'Brown', 'Silver', 'White', 'Blue', 'Purple', 'Grey', 'Spacegrey'],
+			enum: [
+				'Black',
+				'Brown',
+				'Silver',
+				'White',
+				'Blue',
+				'Purple',
+				'Grey',
+				'Spacegrey',
+			],
 		},
 		brand: {
 			type: String,
-			// enum: ['define brands here'],
+			enum: ['Apple', 'Samsung', 'Microsoft', 'Lenovo', 'ASUS'],
 		},
 		ratings: [
 			{

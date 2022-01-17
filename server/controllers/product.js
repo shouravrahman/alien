@@ -268,7 +268,8 @@ const handleColor = async (req, res, color) => {
 }
 
 exports.searchFilters = async (req, res) => {
-	const { query, price, stars, subcategories, shipping, brand, color } = req.body
+	const { query, price, category, stars, subcategories, shipping, brand, color } =
+		req.body
 
 	if (query) {
 		await handleQuery(req, res, query)

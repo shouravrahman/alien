@@ -1,61 +1,65 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
+import { DollarOutlined, DownSquareOutlined, StarOutlined } from '@ant-design/icons'
+import { Checkbox, Menu, Radio, Slider } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { fetchProductsByFilter, getProductsByCount } from '../functions/product'
-import { getCategories } from '../functions/category'
-import { getSubcategories } from '../functions/subcategory'
 import { useDispatch, useSelector } from 'react-redux'
 import ProductCard from '../components/cards/ProductCard'
 import Star from '../components/forms/Star'
-import { Menu, Slider, Checkbox, Radio } from 'antd'
-import { DollarOutlined, DownSquareOutlined, StarOutlined } from '@ant-design/icons'
+import { getCategories } from '../functions/category'
+import { fetchProductsByFilter, getProductsByCount } from '../functions/product'
+import { getSubcategories } from '../functions/subcategory'
 
-const { SubMenu, ItemGroup } = Menu
+const { SubMenu } = Menu
+
 const Shop = () => {
 	const [products, setProducts] = useState([])
 	const [loading, setLoading] = useState(false)
 	const [price, setPrice] = useState([0, 0])
+	const [ok, setOk] = useState(false)
 	const [categories, setCategories] = useState([])
-	const [subcategories, setSubcategories] = useState([])
-	//TODO => dont use hardcoded values for brands or colors
-	const [brands, setBrands] = useState(['Apple', 'HP', 'Microsoft', 'Lenovo'])
-	const [colors, setColors] = useState([
-		'Black',
-		'White',
-		'Golden',
-		'Space-gray',
-		'Silver',
-	])
-	//TODO => dont use hardcoded values for brands or colors
-
-	const [subcategory, setSubcategory] = useState('')
 	const [categoryIds, setCategoryIds] = useState([])
 	const [star, setStar] = useState('')
+	const [subcategories, setSubcategories] = useState([])
+	const [subcategory, setSubcategory] = useState('')
+	const [brands, setBrands] = useState([
+		'Apple',
+		'Samsung',
+		'Microsoft',
+		'Lenovo',
+		'ASUS',
+	])
 	const [brand, setBrand] = useState('')
+	const [colors, setColors] = useState([
+		'Black',
+		'Brown',
+		'Silver',
+		'White',
+		'Blue',
+		'Purple',
+		'Grey',
+		'Spacegrey',
+	])
 	const [color, setColor] = useState('')
 	const [shipping, setShipping] = useState('')
 
-	const [ok, setOk] = useState(false)
-
-	const dispatch = useDispatch()
+	let dispatch = useDispatch()
 	let { search } = useSelector((state) => ({ ...state }))
 	const { text } = search
 
-	// function for all the filter request
+	useEffect(() => {
+		loadAllProducts()
+		// fetch categories
+		getCategories().then((res) => setCategories(res.data))
+		// fetch subcategories
+		getSubcategories().then((res) => setSubcategories(res.data))
+	}, [])
+
 	const fetchProducts = (arg) => {
 		fetchProductsByFilter(arg).then((res) => {
 			setProducts(res.data)
 		})
 	}
 
-	//1.load all products by default
-	useEffect(() => {
-		setLoading(true)
-		loadAllProducts()
-		getCategories().then((res) => setCategories(res.data))
-		getSubcategories().then((res) => setSubcategories(res.data))
-	}, [])
-
+	// 1. load products by default on page load
 	const loadAllProducts = () => {
 		getProductsByCount(12).then((p) => {
 			setProducts(p.data)
@@ -63,120 +67,133 @@ const Shop = () => {
 		})
 	}
 
-	//2.load  products based on user search
+	// 2. load products on user search input
 	useEffect(() => {
 		const delayed = setTimeout(() => {
 			fetchProducts({ query: text })
-		}, 400)
+			if (!text) {
+				loadAllProducts()
+			}
+		}, 300)
 		return () => clearTimeout(delayed)
 	}, [text])
 
-	//3.load products based on price range
+	// 3. load products based on price range
 	useEffect(() => {
+		console.log('ok to request')
 		fetchProducts({ price })
-	}, [ok])
+	}, [ok, price])
 
 	const handleSlider = (value) => {
 		dispatch({
 			type: 'SEARCH_QUERY',
 			payload: { text: '' },
 		})
+
+		// reset
 		setCategoryIds([])
+		setPrice(value)
 		setStar('')
-		setSubcategories('')
+		setSubcategory('')
 		setBrand('')
 		setColor('')
 		setShipping('')
-
-		setPrice(value)
 		setTimeout(() => {
 			setOk(!ok)
-		}, 400)
+		}, 300)
 	}
-	//4.load products based on categories
-	//show all categories in a checkbox
-	const showCategories = () => {
+
+	// 4. load products based on category
+	// show categories in a list of checkbox
+	const showCategories = () =>
 		categories.map((c) => (
 			<div key={c._id}>
 				<Checkbox
 					onChange={handleCheck}
 					className='pb-2 pl-4 pr-4'
 					value={c._id}
-					checked={categoryIds.includes(c._id)}
-					name='category'>
+					name='category'
+					checked={categoryIds.includes(c._id)}>
 					{c.name}
 				</Checkbox>
 				<br />
 			</div>
 		))
-	}
+
+	// handle check for categories
 	const handleCheck = (e) => {
+		// reset
 		dispatch({
 			type: 'SEARCH_QUERY',
 			payload: { text: '' },
 		})
 		setPrice([0, 0])
 		setStar('')
-		setSubcategories('')
+		setSubcategory('')
 		setBrand('')
 		setColor('')
 		setShipping('')
-
+		// console.log(e.target.value);
 		let inTheState = [...categoryIds]
 		let justChecked = e.target.value
-		let foundInTheState = inTheState.indexOf(justChecked)
+		let foundInTheState = inTheState.indexOf(justChecked) // index or -1
 
+		// indexOf method ?? if not found returns -1 else return index [1,2,3,4,5]
 		if (foundInTheState === -1) {
 			inTheState.push(justChecked)
 		} else {
+			// if found pull out one item from index
 			inTheState.splice(foundInTheState, 1)
 		}
 
 		setCategoryIds(inTheState)
-
+		// console.log(inTheState);
 		fetchProducts({ category: inTheState })
 	}
-	//5.find products based on star rating
+
+	// 5. show products by star rating
 	const handleStarClick = (num) => {
+		// console.log(num);
 		dispatch({
 			type: 'SEARCH_QUERY',
 			payload: { text: '' },
 		})
 		setPrice([0, 0])
 		setCategoryIds([])
-		setSubcategories('')
+		setStar(num)
+		setSubcategory('')
+
 		setBrand('')
 		setColor('')
 		setShipping('')
-
-		setStar(num)
 		fetchProducts({ stars: num })
 	}
-	const showStars = () => {
-		return (
-			<div className='pr-4 pl-4 pb-2'>
-				<Star starClick={handleStarClick} numberOfStars={5} />
-				<Star starClick={handleStarClick} numberOfStars={4} />
-				<Star starClick={handleStarClick} numberOfStars={3} />
-				<Star starClick={handleStarClick} numberOfStars={2} />
-				<Star starClick={handleStarClick} numberOfStars={1} />
-			</div>
-		)
-	}
-	//6.show products based on subcategories
 
+	const showStars = () => (
+		<div className='pr-4 pl-4 pb-2'>
+			<Star starClick={handleStarClick} numberOfStars={5} />
+			<Star starClick={handleStarClick} numberOfStars={4} />
+			<Star starClick={handleStarClick} numberOfStars={3} />
+			<Star starClick={handleStarClick} numberOfStars={2} />
+			<Star starClick={handleStarClick} numberOfStars={1} />
+		</div>
+	)
+
+	// 6. show products by sub category
 	const showSubcategories = () =>
 		subcategories.map((s) => (
 			<div
 				key={s._id}
-				style={{ cursor: 'pointer' }}
+				onClick={() => handleSubcategory(s)}
 				className='p-1 m-1 badge badge-secondary'
-				onClick={() => handleSubcategories(s)}>
+				style={{ cursor: 'pointer' }}>
 				{s.name}
 			</div>
 		))
 
-	const handleSubcategories = (s) => {
+	const handleSubcategory = (sub) => {
+		// console.log("SUB", sub);
+		setSubcategory(sub)
 		dispatch({
 			type: 'SEARCH_QUERY',
 			payload: { text: '' },
@@ -187,14 +204,14 @@ const Shop = () => {
 		setBrand('')
 		setColor('')
 		setShipping('')
-
 		fetchProducts({ subcategory })
 	}
 
-	//7.show products based on brands
+	// 7. show products based on brand name
 	const showBrands = () =>
 		brands.map((b) => (
 			<Radio
+				key={b}
 				value={b}
 				name={b}
 				checked={b === brand}
@@ -205,6 +222,7 @@ const Shop = () => {
 		))
 
 	const handleBrand = (e) => {
+		setSubcategory('')
 		dispatch({
 			type: 'SEARCH_QUERY',
 			payload: { text: '' },
@@ -212,18 +230,17 @@ const Shop = () => {
 		setPrice([0, 0])
 		setCategoryIds([])
 		setStar('')
-		setSubcategories('')
 		setColor('')
-		setShipping('')
-
 		setBrand(e.target.value)
+		setShipping('')
 		fetchProducts({ brand: e.target.value })
 	}
 
-	//8.show products based on colors
+	// 8. show products based on color
 	const showColors = () =>
 		colors.map((c) => (
 			<Radio
+				key={c}
 				value={c}
 				name={c}
 				checked={c === color}
@@ -234,6 +251,7 @@ const Shop = () => {
 		))
 
 	const handleColor = (e) => {
+		setSubcategory('')
 		dispatch({
 			type: 'SEARCH_QUERY',
 			payload: { text: '' },
@@ -241,34 +259,35 @@ const Shop = () => {
 		setPrice([0, 0])
 		setCategoryIds([])
 		setStar('')
-		setSubcategories('')
 		setBrand('')
-		setShipping('')
-
 		setColor(e.target.value)
+		setShipping('')
 		fetchProducts({ color: e.target.value })
 	}
 
-	//8.show products based on shipping
+	// 9. show products based on shipping yes/no
 	const showShipping = () => (
 		<>
 			<Checkbox
 				className='pb-2 pl-4 pr-4'
-				onChange={handleShippingChange}
+				onChange={handleShippingchange}
 				value='Yes'
 				checked={shipping === 'Yes'}>
 				Yes
 			</Checkbox>
+
 			<Checkbox
 				className='pb-2 pl-4 pr-4'
-				onChange={handleShippingChange}
+				onChange={handleShippingchange}
 				value='No'
 				checked={shipping === 'No'}>
 				No
 			</Checkbox>
 		</>
 	)
-	const handleShippingChange = (e) => {
+
+	const handleShippingchange = (e) => {
+		setSubcategory('')
 		dispatch({
 			type: 'SEARCH_QUERY',
 			payload: { text: '' },
@@ -276,10 +295,8 @@ const Shop = () => {
 		setPrice([0, 0])
 		setCategoryIds([])
 		setStar('')
-		setSubcategories('')
 		setBrand('')
 		setColor('')
-
 		setShipping(e.target.value)
 		fetchProducts({ shipping: e.target.value })
 	}
@@ -291,8 +308,8 @@ const Shop = () => {
 					<h4>Search/Filter</h4>
 					<hr />
 
-					<Menu defaultOpenKeys={['1', '2', '3', '4', '5']} mode='inline'>
-						{/* for price */}
+					<Menu defaultOpenKeys={['1', '2', '3', '4', '5', '6', '7']} mode='inline'>
+						{/* price */}
 						<SubMenu
 							key='1'
 							title={
@@ -307,12 +324,12 @@ const Shop = () => {
 									range
 									value={price}
 									onChange={handleSlider}
-									max='5000'
-									min='100'
+									max='4999'
 								/>
 							</div>
 						</SubMenu>
-						{/* for categories */}
+
+						{/* category */}
 						<SubMenu
 							key='2'
 							title={
@@ -320,9 +337,10 @@ const Shop = () => {
 									<DownSquareOutlined /> Categories
 								</span>
 							}>
-							<div style={{ marginTop: '-10px' }}>{showCategories()}</div>
+							<div style={{ maringTop: '-10px' }}>{showCategories()}</div>
 						</SubMenu>
-						{/* for rating*/}
+
+						{/* stars */}
 						<SubMenu
 							key='3'
 							title={
@@ -330,21 +348,23 @@ const Shop = () => {
 									<StarOutlined /> Rating
 								</span>
 							}>
-							<div style={{ marginTop: '-10px' }}>{showStars()}</div>
+							<div style={{ maringTop: '-10px' }}>{showStars()}</div>
 						</SubMenu>
-						{/* for subcategories */}
+
+						{/* sub category */}
 						<SubMenu
 							key='4'
 							title={
 								<span className='h6'>
-									<DownSquareOutlined /> Subcategories
+									<DownSquareOutlined /> Sub Categories
 								</span>
 							}>
-							<div style={{ marginTop: '-10px' }}>{showSubcategories()}</div>
+							<div style={{ maringTop: '-10px' }} className='pl-4 pr-4'>
+								{showSubcategories()}
+							</div>
 						</SubMenu>
 
-						{/* for brands*/}
-
+						{/* brands */}
 						<SubMenu
 							key='5'
 							title={
@@ -352,13 +372,12 @@ const Shop = () => {
 									<DownSquareOutlined /> Brands
 								</span>
 							}>
-							<div style={{ marginTop: '-10px' }} className='pr-5'>
+							<div style={{ maringTop: '-10px' }} className='pr-5'>
 								{showBrands()}
 							</div>
 						</SubMenu>
 
-						{/* for colors */}
-
+						{/* colors */}
 						<SubMenu
 							key='6'
 							title={
@@ -366,12 +385,12 @@ const Shop = () => {
 									<DownSquareOutlined /> Colors
 								</span>
 							}>
-							<div style={{ marginTop: '-10px' }} className='pr-5'>
+							<div style={{ maringTop: '-10px' }} className='pr-5'>
 								{showColors()}
 							</div>
 						</SubMenu>
 
-						{/* for shipping*/}
+						{/* shipping */}
 						<SubMenu
 							key='7'
 							title={
@@ -379,27 +398,25 @@ const Shop = () => {
 									<DownSquareOutlined /> Shipping
 								</span>
 							}>
-							<div style={{ marginTop: '-10px' }} className='pr-5'>
+							<div style={{ maringTop: '-10px' }} className='pr-5'>
 								{showShipping()}
 							</div>
 						</SubMenu>
 					</Menu>
 				</div>
 
-				<div className='col-md-9 pt-3'>
+				<div className='col-md-9 pt-2'>
 					{loading ? (
-						<h4 className='text-danger'>loading...</h4>
+						<h4 className='text-danger'>Loading...</h4>
 					) : (
-						<>
-							<h4 className='text-info text-center mt-1'>Products</h4>
-							<hr />
-						</>
+						<h4 className='text-danger'>Products</h4>
 					)}
-					{products.length < 1 && <p className='text-info'>No Products Found</p>}
+
+					{products.length < 1 && <p>No products found</p>}
 
 					<div className='row pb-5'>
 						{products.map((p) => (
-							<div className='col-md-4 mt-3' key={p._id}>
+							<div key={p._id} className='col-md-4 mt-3'>
 								<ProductCard product={p} />
 							</div>
 						))}
