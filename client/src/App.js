@@ -1,35 +1,38 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import './App.css'
-import { Switch, Route } from 'react-router-dom'
-import Header from './components/nav/Header'
-import Login from './pages/auth/Login'
-import Register from './pages/auth/Register'
-import Home from './pages/Home'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { Route, Switch } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import RegisterComplete from './pages/auth/RegisterComplete'
-import { auth } from './firebase'
-import { useDispatch } from 'react-redux'
-import { useEffect } from 'react'
-import ForgotPassword from './pages/auth/ForgotPassword'
-import { currentUser } from './functions/auth'
-import History from './pages/user/History'
-import UserRoute from './components/routes/UserRoute'
+import './App.css'
+import SideDrawer from './components/drawer/SideDrawer'
+import Header from './components/nav/Header'
 import AdminRoute from './components/routes/AdminRoute'
-import Password from './pages/user/Password'
-import Wishlist from './pages/user/Wishlist'
+import UserRoute from './components/routes/UserRoute'
+import { auth } from './firebase'
+import { currentUser } from './functions/auth'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import CreateCategory from './pages/admin/category/CreateCategory'
 import UpdateCategory from './pages/admin/category/UpdateCategory'
+import AllProducts from './pages/admin/product/AllProducts'
+import CreateProduct from './pages/admin/product/CreateProduct'
+import UpdateProduct from './pages/admin/product/UpdateProduct'
 import CreateSubcategory from './pages/admin/subcategory/CreateSubcategory'
 import UpdateSubcategory from './pages/admin/subcategory/UpdateSubcategory'
-import CreateProduct from './pages/admin/product/CreateProduct'
-import AllProducts from './pages/admin/product/AllProducts'
-import UpdateProduct from './pages/admin/product/UpdateProduct'
-import Product from './pages/Product'
+import ForgotPassword from './pages/auth/ForgotPassword'
+import Login from './pages/auth/Login'
+import Register from './pages/auth/Register'
+import RegisterComplete from './pages/auth/RegisterComplete'
+import Cart from './pages/Cart'
 import CategoryHome from './pages/category/CategoryHome'
-import SubcategoryHome from './pages/subcategory/SubcategoryHome'
+import Checkout from './pages/Checkout'
+import Home from './pages/Home'
+import Product from './pages/Product'
 import Shop from './pages/Shop'
+import SubcategoryHome from './pages/subcategory/SubcategoryHome'
+import History from './pages/user/History'
+import Password from './pages/user/Password'
+import Wishlist from './pages/user/Wishlist'
 
 function App() {
 	const dispatch = useDispatch()
@@ -60,6 +63,7 @@ function App() {
 	return (
 		<>
 			<Header />
+			<SideDrawer />
 			<ToastContainer />
 			<Switch>
 				<Route path='/' exact component={Home}></Route>
@@ -106,6 +110,8 @@ function App() {
 				<Route path='/category/:slug' exact component={CategoryHome}></Route>
 				<Route path='/subcategory/:slug' exact component={SubcategoryHome}></Route>
 				<Route path='/shop' exact component={Shop}></Route>
+				<Route path='/cart' exact component={Cart}></Route>
+				<UserRoute path='/checkout' exact component={Checkout} />
 			</Switch>
 		</>
 	)
