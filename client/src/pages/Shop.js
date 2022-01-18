@@ -153,7 +153,7 @@ const Shop = () => {
 
 	// 5. show products by star rating
 	const handleStarClick = (num) => {
-		// console.log(num);
+		console.log(num)
 		dispatch({
 			type: 'SEARCH_QUERY',
 			payload: { text: '' },
