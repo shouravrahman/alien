@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import { Card, Tooltip } from 'antd'
 import { EyeOutlined, ShoppingOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+import { Card, Tooltip } from 'antd'
 import _ from 'lodash'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const { Meta } = Card
 
@@ -42,6 +42,11 @@ const ProductCard = ({ product }) => {
 			dispatch({
 				type: 'ADD_TO_CART',
 				payload: unique,
+			})
+			//side drawer
+			dispatch({
+				type: 'SET_VISIBLE',
+				payload: true,
 			})
 		}
 	}

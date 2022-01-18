@@ -1,18 +1,18 @@
-import { Card, Tabs, Tooltip } from 'antd'
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons'
-import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loader
+import { Card, Tabs, Tooltip } from 'antd'
+import _ from 'lodash'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Carousel } from 'react-responsive-carousel'
-import ProductListItems from './ProductListItems'
-// import { Tabs } from 'antd'
-// import StarRating from 'react-star-ratings'
-import RatingModal from '../modal/RatingModal'
+import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loader
+import { Link } from 'react-router-dom'
 // import starRatings from 'react-star-ratings/build/star-ratings'
 import StarRatings from 'react-star-ratings'
 import { showAverage } from '../../functions/rating'
-import _ from 'lodash'
-import { useSelector, useDispatch } from 'react-redux'
+// import { Tabs } from 'antd'
+// import StarRating from 'react-star-ratings'
+import RatingModal from '../modal/RatingModal'
+import ProductListItems from './ProductListItems'
 
 const { TabPane } = Tabs
 
@@ -52,6 +52,11 @@ const SingleProduct = ({ product, onStarClick, star }) => {
 			dispatch({
 				type: 'ADD_TO_CART',
 				payload: unique,
+			})
+			//side drawer
+			dispatch({
+				type: 'SET_VISIBLE',
+				payload: true,
 			})
 		}
 	}
