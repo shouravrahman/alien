@@ -1,6 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const bodyParser = require('body-parser')
+// const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 const fs = require('fs')
@@ -14,8 +14,8 @@ const authRoutes = require('./routes/auth')
 const categoryRoutes = require('./routes/category')
 const subcategoryRoutes = require('./routes/subcategory')
 const cloudinaryRoutes = require('./routes/cloudinary')
-const userRoutes = require('./routes/user')
 const productRoutes = require('./routes/product')
+const userRoutes = require('./routes/user')
 
 // database
 mongoose.set('useNewUrlParser', true)
@@ -29,7 +29,8 @@ mongoose
 
 //middlewares
 app.use(morgan('dev'))
-app.use(bodyParser.json({ limit: '2mb' }))
+// app.use(bodyParser.json({ limit: '2mb' }))
+app.use(express.json())
 app.use(cors())
 
 app.use('/api', authRoutes)
