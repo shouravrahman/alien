@@ -2,6 +2,7 @@ const User = require('../models/user')
 const Product = require('../models/product')
 const Cart = require('../models/cart')
 const Order = require('../models/order')
+const Coupon = require('../models/coupon')
 
 exports.userCart = async (req, res) => {
 	// console.log(req.body); // {cart: []}
@@ -113,7 +114,7 @@ exports.applyCouponToUserCart = async (req, res) => {
 	res.json(totalAfterDiscount)
 }
 
-expors.createOrder = async (req, res) => {
+exports.createOrder = async (req, res) => {
 	//get intent
 	const { paymentIntent } = req.body.stripeResponse
 	//get user
@@ -129,6 +130,18 @@ expors.createOrder = async (req, res) => {
 	}).save()
 
 	// decrement quantity,increment sold
+	let bulkOption = products.map((item) => {
+		return {
+			updateOne: {
+				filter: { _id: item.product._id },
+				update: {
+					$inc: { quantity: -item.count, sold: +item.count },
+				},
+			},
+		}
+	})
+
+	let updated = await Product.bulkWrite(bulkOption, {})
 
 	res.json({ ok: true })
 }
