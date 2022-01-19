@@ -1,4 +1,4 @@
-import { EyeOutlined, ShoppingOutlined } from '@ant-design/icons'
+import { EyeOutlined, ShoppingCartOutlined } from '@ant-design/icons'
 import { Card, Tooltip } from 'antd'
 import _ from 'lodash'
 import React, { useState } from 'react'
@@ -62,9 +62,10 @@ const ProductCard = ({ product }) => {
 				</Link>,
 				<Tooltip title={tooltip}>
 					{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-					<a onClick={handleAddToCart}>
-						<ShoppingOutlined className='text-danger' />
-						<br /> Add to Cart{' '}
+					<a disabled={product.qunatity < 1} onClick={handleAddToCart}>
+						<ShoppingCartOutlined className='text-danger' />
+						<br />
+						{product.qunatity < 1 ? 'Out of Stock' : 'Add to Cart'}
 					</a>
 				</Tooltip>,
 			]}
