@@ -16,6 +16,8 @@ const subcategoryRoutes = require('./routes/subcategory')
 const cloudinaryRoutes = require('./routes/cloudinary')
 const productRoutes = require('./routes/product')
 const userRoutes = require('./routes/user')
+const stripeRoutes = require('./routes/stripe')
+const couponRoutes = require('./routes/coupon')
 
 // database
 mongoose.set('useNewUrlParser', true)
@@ -39,6 +41,8 @@ app.use('/api', userRoutes)
 app.use('/api', categoryRoutes)
 app.use('/api', subcategoryRoutes)
 app.use('/api', cloudinaryRoutes)
+app.use('/api', stripeRoutes)
+app.use('/api', couponRoutes)
 //routes middleware
 // app.use('/api', authRoutes);
 // fs.readdirSync('./routes').map((r) => app.use('/api', require('./routes/' + r)))
