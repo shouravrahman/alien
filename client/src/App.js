@@ -14,6 +14,7 @@ import { currentUser } from './functions/auth'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import CreateCategory from './pages/admin/category/CreateCategory'
 import UpdateCategory from './pages/admin/category/UpdateCategory'
+import CreateCoupon from './pages/admin/coupon/CreateCoupon'
 import AllProducts from './pages/admin/product/AllProducts'
 import CreateProduct from './pages/admin/product/CreateProduct'
 import UpdateProduct from './pages/admin/product/UpdateProduct'
@@ -27,6 +28,7 @@ import Cart from './pages/Cart'
 import CategoryHome from './pages/category/CategoryHome'
 import Checkout from './pages/Checkout'
 import Home from './pages/Home'
+import Payment from './pages/Payment'
 import Product from './pages/Product'
 import Shop from './pages/Shop'
 import SubcategoryHome from './pages/subcategory/SubcategoryHome'
@@ -106,12 +108,14 @@ function App() {
 					path='/admin/product/:slug'
 					exact
 					component={UpdateProduct}></AdminRoute>
+				<AdminRoute path='/admin/coupon' exact component={CreateCoupon}></AdminRoute>
 				<Route path='/product/:slug' exact component={Product}></Route>
 				<Route path='/category/:slug' exact component={CategoryHome}></Route>
 				<Route path='/subcategory/:slug' exact component={SubcategoryHome}></Route>
 				<Route path='/shop' exact component={Shop}></Route>
 				<Route path='/cart' exact component={Cart}></Route>
-				<UserRoute path='/checkout' exact component={Checkout} />
+				<UserRoute path='/checkout' exact component={Checkout}></UserRoute>
+				<UserRoute path='/payment' exact component={Payment}></UserRoute>
 			</Switch>
 		</>
 	)
