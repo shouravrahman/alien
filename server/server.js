@@ -18,6 +18,7 @@ const productRoutes = require('./routes/product')
 const userRoutes = require('./routes/user')
 const stripeRoutes = require('./routes/stripe')
 const couponRoutes = require('./routes/coupon')
+const adminRoutes = require('./routes/admin')
 
 // database
 mongoose.set('useNewUrlParser', true)
@@ -43,6 +44,7 @@ app.use('/api', subcategoryRoutes)
 app.use('/api', cloudinaryRoutes)
 app.use('/api', stripeRoutes)
 app.use('/api', couponRoutes)
+app.use('/api', adminRoutes)
 //routes middleware
 // app.use('/api', authRoutes);
 // fs.readdirSync('./routes').map((r) => app.use('/api', require('./routes/' + r)))
