@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
-// const { ObjectId } = mongoose.schema;
+const mongoose = require('mongoose')
+const { Schema } = mongoose
+const { ObjectId } = Schema
 
 const userSchema = new Schema(
 	{
@@ -19,8 +19,8 @@ const userSchema = new Schema(
 			default: [],
 		},
 		address: String,
-		// wishlist:[{type:ObjectId,ref:'Product'}]
+		wishlist: [{ type: ObjectId, ref: 'Product' }],
 	},
 	{ timestamps: true }
-);
-module.exports = mongoose.model('User', userSchema);
+)
+module.exports = mongoose.model('User', userSchema)
