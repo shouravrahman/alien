@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons'
 import { Card, Tabs, Tooltip } from 'antd'
 import _ from 'lodash'
@@ -5,10 +6,11 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Carousel } from 'react-responsive-carousel'
 import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loader
-import { Link } from 'react-router-dom'
 // import starRatings from 'react-star-ratings/build/star-ratings'
 import StarRatings from 'react-star-ratings'
+import { toast } from 'react-toastify'
 import { showAverage } from '../../functions/rating'
+import { addToWishlist } from '../../functions/user'
 // import { Tabs } from 'antd'
 // import StarRating from 'react-star-ratings'
 import RatingModal from '../modal/RatingModal'
@@ -16,7 +18,7 @@ import ProductListItems from './ProductListItems'
 
 const { TabPane } = Tabs
 
-const SingleProduct = ({ product, onStarClick, star }) => {
+const SingleProduct = ({ history, product, onStarClick, star }) => {
 	const [tooltip, setTooltip] = useState('Click to add')
 	//redux
 	const { user, cart } = useSelector((state) => ({ ...state }))
@@ -60,6 +62,14 @@ const SingleProduct = ({ product, onStarClick, star }) => {
 			})
 		}
 	}
+	const handleAddToWishlist = (e) => {
+		e.preventDefault()
+		addToWishlist(product._id, user.token).then((res) => {
+			console.log('ADDED TO WISHLIST', res.data)
+			toast.success('Added to wishlist')
+			history.push('/user/wishlist')
+		})
+	}
 
 	return (
 		<>
@@ -102,11 +112,10 @@ const SingleProduct = ({ product, onStarClick, star }) => {
 								<br /> Add to Cart{' '}
 							</a>
 						</Tooltip>,
-						<Link to={`/`}>
-							<HeartOutlined className='text-success' />
-							<br />
-							Add to Wishlist
-						</Link>,
+						<a onClick={handleAddToWishlist}>
+							<HeartOutlined className='text-info' /> <br /> Add to Wishlist
+						</a>,
+
 						<RatingModal>
 							<StarRatings
 								name={_id}
