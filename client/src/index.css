@@ -4,9 +4,16 @@ a {
 }
 body {
 	height: 100vh;
+	font-family: Nunito, Georgia, 'Times New Roman', Times, serif !important;
+	overflow-x: hidden;
 }
 .slider img,
 .card-image {
 	max-height: 400px;
 	object-fit: cover;
+}
+.navbar-link-color {
+	color: #262626;
+	text-transform: capitalize;
+	font-size: 1.1rem;
 }
