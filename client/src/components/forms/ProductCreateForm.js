@@ -31,9 +31,10 @@ const ProductCreateForm = ({
 				<input
 					type='text'
 					name='title'
-					className='form-control'
+					className='form-control mb-2'
 					value={title}
 					onChange={handleChange}
+					required
 				/>
 			</div>
 
@@ -45,6 +46,7 @@ const ProductCreateForm = ({
 					className='form-control'
 					value={description}
 					onChange={handleChange}
+					required
 				/>
 			</div>
 
@@ -56,12 +58,17 @@ const ProductCreateForm = ({
 					className='form-control'
 					value={price}
 					onChange={handleChange}
+					required
 				/>
 			</div>
 
 			<div className='form-group'>
 				<label>Shipping</label>
-				<select name='shipping' className='form-control' onChange={handleChange}>
+				<select
+					name='shipping'
+					required
+					className='form-control'
+					onChange={handleChange}>
 					<option>Please select</option>
 					<option value='Yes'>Yes</option>
 					<option value='No'>No</option>
@@ -76,6 +83,7 @@ const ProductCreateForm = ({
 					className='form-control'
 					value={quantity}
 					onChange={handleChange}
+					required
 				/>
 			</div>
 
@@ -103,6 +111,7 @@ const ProductCreateForm = ({
 			<div className='form-group'>
 				<label>Category</label>
 				<select
+					required
 					name='category'
 					className='form-control'
 					onChange={handleCategoryChange}>

@@ -74,8 +74,9 @@ const CreateProduct = () => {
 					<AdminNav />
 				</div>
 				<div className='col-md-10'>
-					<h4>Create Product</h4>
-					<div className='p-3'>
+					<h4 className='mt-2 text-center'>Create Product</h4>
+					<div className='d-flex align-items-center'>
+						<h6 className='mr-5'>Upload Photos : </h6>
 						<FileUpload
 							values={values}
 							setValues={setValues}

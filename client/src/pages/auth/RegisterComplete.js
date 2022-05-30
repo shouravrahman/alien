@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { auth } from '../../firebase';
-import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
-import { createOrUpdateUser } from '../../functions/auth';
+import React, { useState, useEffect } from 'react'
+import { auth } from '../../firebase'
+import { toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
+import { createOrUpdateUser } from '../../functions/auth'
 
 const RegisterComplete = ({ history }) => {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	let dispatch = useDispatch();
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+	let dispatch = useDispatch()
 	// const { user } = useSelector((state) => ({ ...state }));
 
 	const handleSubmit = async (e) => {
-		e.preventDefault();
+		e.preventDefault()
 		if (!email || !password) {
-			toast.error(`Email and password required`);
-			return;
+			toast.error(`Email and password required`)
+			return
 		}
 		if (password.length < 6) {
-			toast.error(`Password must be at least 6 charecters long`);
+			toast.error(`Password must be at least 6 charecters long`)
 		}
 		try {
-			const result = await auth.signInWithEmailLink(email, window.location.href);
+			const result = await auth.signInWithEmailLink(email, window.location.href)
 
 			if (result.user.emailVerified) {
 				//remove useremail from local storage
-				window.localStorage.removeItem('emailForRegistration');
+				window.localStorage.removeItem('emailForRegistration')
 				//get user id token
-				let user = auth.currentUser;
-				await user.updatePassword(password);
-				const idTokenResult = await user.getIdTokenResult();
+				let user = auth.currentUser
+				await user.updatePassword(password)
+				const idTokenResult = await user.getIdTokenResult()
 				//redux store
 				createOrUpdateUser(idTokenResult.token)
 					.then((res) => {
@@ -41,20 +41,20 @@ const RegisterComplete = ({ history }) => {
 								role: res.data.role,
 								_id: res.data._id,
 							},
-						});
+						})
 					})
-					.catch((err) => console.log(err));
+					.catch((err) => console.log(err))
 				//redirect
-				history.push('/');
+				history.push('/')
 			}
 		} catch (error) {
-			toast.error(error.message);
+			toast.error(error.message)
 		}
-	};
+	}
 
 	useEffect(() => {
-		setEmail(window.localStorage.getItem('emailForRegistration'));
-	}, []);
+		setEmail(window.localStorage.getItem('emailForRegistration'))
+	}, [])
 	//write the form in a function for better splitting
 	const registerCompleteForm = () => (
 		<form onSubmit={handleSubmit} className='form-group'>
@@ -66,7 +66,7 @@ const RegisterComplete = ({ history }) => {
 				className='form-control mb-1'
 			/>
 			<input
-				label='Password'
+				placeholder='Password'
 				type='password'
 				value={password}
 				onChange={(e) => setPassword(e.target.value)}
@@ -80,7 +80,7 @@ const RegisterComplete = ({ history }) => {
 				Complete Registration
 			</button>
 		</form>
-	);
+	)
 	return (
 		<div className='container p-5'>
 			<div className='row'>
@@ -90,7 +90,7 @@ const RegisterComplete = ({ history }) => {
 				</div>
 			</div>
 		</div>
-	);
-};
+	)
+}
 
-export default RegisterComplete;
+export default RegisterComplete
